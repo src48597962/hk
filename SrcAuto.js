@@ -545,8 +545,10 @@ var aytmParse = function (vipUrl,parseStr) {
                                         rurl = gethtml.match(/"url":"(.*?)"/)[1];
                                     }else if(gethtml.indexOf('id="video" src="') != -1){
                                         rurl = gethtml.match(/id="video" src="(.*?)"/)[1];
+                                    }else if(gethtml.indexOf('url: "') != -1){
+                                        rurl = gethtml.match(/url: "(.*?)"/)[1];
                                     }else{
-                                        log('√将日志提交给帅，帮助完善解析逻辑 '+gethtml);
+                                        //log('√将日志提交给帅，帮助完善解析逻辑 '+gethtml);
                                     }
                                 } catch (e) {
                                     log('√明码获取错误：'+e.message);
