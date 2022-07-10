@@ -1177,7 +1177,7 @@ function createJParse() {
             var lx = "";
             var JXstr = "";
             try {
-                url = JSON.parse(html).url||JSON.parse(html).data;
+                url = JSON.parse(html).url||JSON.parse(html).data.url||JSON.parse(html).data;
                 lx = "O";
             } catch (e) {
                 //log('不是json解析');
