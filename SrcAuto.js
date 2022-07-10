@@ -533,7 +533,7 @@ var aytmParse = function (vipUrl,parseStr) {
                         var rurl = "";
                         var rjxlx = "";
                         try {
-                            rurl = JSON.parse(gethtml).url||JSON.parse(gethtml).data;
+                            rurl = JSON.parse(gethtml).url||JSON.parse(gethtml).data.url||JSON.parse(gethtml).data;
                             rjxlx = "O";
                         } catch (e) {
                             //if(config.printlog==1){log(parsename+"-√URL直链-JSON解析失败，转网页明码偿试")}; 
