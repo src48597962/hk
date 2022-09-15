@@ -5,7 +5,93 @@
 var SrcVersion = 6.23;
 
 //载入断插主控js
-eval(fetch('hiker://files/cache/Parse_Dn.js'));
+var cfgfile = "hiker://files/rules/Src/Juying/config.json";
+var Juyingcfg=fetch(cfgfile);
+if(Juyingcfg != ""){
+    eval("var JYconfig=" + Juyingcfg+ ";");
+}
+var parseRoute = JYconfig.dnfile?JYconfig.dnfile:'hiker://files/rules/DuanNian/MyParse.json';
+var MyParseS = {};
+var mySet = {};
+if (fileExist(parseRoute)) {
+    eval('var parseFile =' + (/^http/.test(parseRoute)?fetchCache(parseRoute, 24):fetch(parseRoute)));
+    MyParseS = parseFile.codes;
+    mySet = parseFile.settings;
+}
+
+var tools = {
+    MD5: function(data) {
+        eval(getCryptoJS());
+        return CryptoJS.MD5(data).toString(CryptoJS.enc.Hex);
+    },
+    AES: function(text, key, iv, isEncrypt) {
+        eval(getCryptoJS());
+        var key = CryptoJS.enc.Utf8.parse(key);
+        var iv = CryptoJS.enc.Utf8.parse(iv);
+        if (isEncrypt) {
+            return CryptoJS.AES.encrypt(text, key, {
+                iv: iv,
+                mode: CryptoJS.mode.CBC,
+                padding: CryptoJS.pad.Pkcs7
+            }).toString();
+        };
+        return CryptoJS.AES.decrypt(text, key, {
+            iv: iv,
+            padding: CryptoJS.pad.Pkcs7
+        }).toString(CryptoJS.enc.Utf8);
+    },
+    //ascii
+    nextCharacter: function(asciiValue, k) {
+        var s = asciiValue;
+        return String.fromCharCode(s + k);
+    },
+    //凯撒
+    caesarCipher: function(stringValue, k) {
+        var newString = "";
+        for (var i = 0; i < stringValue.length; i++) {
+            newString += this.nextCharacter(stringValue[i].charCodeAt(), k);
+        }
+        return newString;
+    }
+};
+
+var ParseS = {};
+var originalParseS = {
+    maoss: function(jxurl, ref, key) {
+        try {
+            var getVideoInfo = function(text) {
+                return tools.AES(text, key, iv);
+            };
+            key = key == undefined ? 'dvyYRQlnPRCMdQSe' : key;
+            if (ref) {
+                var html = request(jxurl, {
+                    headers: {
+                        'Referer': ref
+                    }
+                });
+            } else {
+                var html = request(jxurl);
+            }
+            if (html.indexOf('&btwaf=') != -1) {
+                html = request(jxurl + '&btwaf' + html.match(/&btwaf(.*?)"/)[1], {
+                    headers: {
+                        'Referer': ref
+                    }
+                })
+            }
+            var iv = html.split('_token = "')[1].split('"')[0];
+            eval(html.match(/var config = {[\s\S]*?}/)[0] + '');
+            if (config.url.slice(0, 4) != 'http') {
+                config.url = decodeURIComponent(tools.AES(config.url, key, iv));
+            }
+            return config.url;
+        } catch (e) {
+            return '';
+        }
+    }
+};
+Object.assign(ParseS, originalParseS, MyParseS);
+//覆盖顺序，第三个覆盖第二个然后覆盖第一个
 
 //------参数设置------
 var defaultconfig = {
