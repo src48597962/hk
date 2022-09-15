@@ -1,8 +1,5 @@
 //============自动挡处理逻辑、仅用于个人学习使用============
 //========感谢@断念大佬========
-//－－－=^_^=@帅√`人才=^_^=－－－
-
-var SrcVersion = 6.23;
 
 //载入断插主控js
 var cfgfile = "hiker://files/rules/Src/Juying/config.json";
