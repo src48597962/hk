@@ -430,7 +430,7 @@ var aytmParse = function (vipUrl,parseStr) {
     //if(Uparselist.length > 0){Uparselist.sort(sortData)};
     //if(config.printlog==1){log("√有效解析接口数："+(Jparselist.length+Uparselist.length))};
     if(config.printlog==1){
-        log("√有效解析数："+parselist.length+"，JS解析："+Jparsenum+"，URL解析："+Uparsenum)
+        log("√有效解析数："+parselist.length+"，JS解析："+Jparsenum+"，URL解析："+Uparsenum);
     };
 
     var exclude = /404\.m3u8|xiajia\.mp4|余额不足\.m3u8/;//设置排除地址
@@ -452,6 +452,13 @@ var aytmParse = function (vipUrl,parseStr) {
     
     //明码解析线程代码
     var parsetask = function(obj) {
+        var rurl = "";
+        if(obj.lx=="J"){
+            rurl = ParseS[obj.parsename](obj.vipUrl);
+        }else{
+            
+        }
+        
         if(/^function/.test(obj.ulist.parse.trim())){
             eval('var JSparse = '+obj.ulist.parse)
             var rurl = JSparse(obj.vipUrl);
@@ -516,6 +523,108 @@ var aytmParse = function (vipUrl,parseStr) {
             }
         }
     };
+    if(config.testcheck==1){showLoading('JS免嗅解析列表，检测中')};
+
+    for (var i=0;i<parselist.length;i++) {
+        if(contain.test(url)){break;}
+        var beurls = [];//用于存储多线程返回地址
+        var benames = [];//用于存储多线程名称
+        var beerrors = [];//用于存储多线程是否有错误
+        
+        let p = i+multiline;
+        if(p>parselist.length){p=parselist.length}
+        let JxList = [];
+        for(let s=i;s<p;s++){
+            JxList.push(parselist[s]);
+            i=s;
+        }
+        let parses = JxList.map((parse)=>{
+            return {
+                func: parsetask,
+                param: parse,
+                id: parse.id
+            }
+        });
+
+        be(parses, {
+            func: function(obj, id, error, taskResult) {
+                obj.results.push(taskResult);
+                obj.names.push(id);
+                obj.errors.push(error);
+
+                if (AppVer>=2909&&ismulti!=1&&config.testcheck!=1&&contain.test(taskResult)&&!exclude.test(taskResult)) {
+                    //toast("我主动中断了");
+                    log("√线程中止");
+                    return "break";
+                }
+            },
+            param: {
+                results: beurls,
+                names: benames,
+                errors: beerrors
+            }
+        });
+
+        for(let k in benames){
+            parsename = benames[k];
+            if(config.printlog==1){log("√正在调用js解析：" + parsename)};
+            if(beerrors[k]==null){
+                if(config.jstoweb==1&&beurls[k].search(/x5Rule|webRule/)>-1){
+                        //js中跳转x5或web嗅探
+                        if(config.printlog==1){log("√JS中跳转x5|web嗅探,帅助手逻辑被打断,结果自负")};  
+                        return beurls[k];
+                }else{
+                    if (contain.test(beurls[k]) && !exclude.test(beurls[k])) {
+                        url = beurls[k];
+                        if(config.printlog==1){log("√JS解析成功>" + url)};  
+                        if(config.testcheck==1){url=""}else{
+                            if(ismulti==1&&multiline>1){
+                                let rurl = url.replace(/;{.*}/,'');
+                                let head = format.urlJoinUa(rurl,1);
+                                urls.push(format.urlCacheM3u8(rurl,head,urls.length)+'#pre#');
+                                names.push(parsename);
+                                headers.push(head);
+                            }else{
+                                break;
+                            }
+                        }
+                    } else {
+                        //JS解析失败了，排序+1
+                        let failsum =0 ;
+                        for(var j=0;j<sortlist.length;j++){
+                            if(sortlist[j].name == parsename){ 
+                                sortlist[j].sort = sortlist[j].sort+1;
+                                issort = 1;
+                                failsum = sortlist[j].sort;
+                                if(sortlist[j].stopfrom.indexOf(from)==-1){
+                                    if((config.autoselect==1&&failsum>2)||(failsum>=config.failcount)){
+                                        //自动选择接口时此接口失败大于2时、失败次数大于限定，此片源排除此解析接口
+                                        sortlist[j].stopfrom[sortlist[j].stopfrom.length] = from
+                                    };
+                                }
+                                break;
+                            }
+                        }
+                        if(config.testcheck==1){faillist.push(parsename)};
+                        if(config.printlog==1){log("√解析失败,已失败"+failsum+"次，更换下一个解析")};
+                    }
+                }
+            }else{
+                if(config.testcheck==1){faillist.push(parsename)};
+                if(config.printlog==1){log(beerrors[k]+" √此接口有语法错误，更换下一个解析")};
+                for(var j=0;j<sortlist.length;j++){
+                    if(sortlist[j].name == parsename){ 
+                        sortlist[j].sort = sortlist[j].sort+1;
+                        issort = 1;
+                        if(sortlist[j].stopfrom.indexOf(from)==-1){
+                            sortlist[j].stopfrom[sortlist[j].stopfrom.length] = from;
+                        }
+                        break;
+                    }
+                }
+            }
+        }//多线程结果处理
+    }//循环结束
 
     /*
     if(Jparselist.length>0){ 
