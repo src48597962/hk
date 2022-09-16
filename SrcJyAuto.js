@@ -442,47 +442,26 @@ var aytmParse = function (vipUrl,parseStr) {
     var ismulti = config.ismulti||0;
     var multiline = config.multiline||1;
     var adminuser = config.adminuser||0;
-    var AppVer = getAppVersion();
-    if(AppVer>=2909){
-        if(ismulti==0&&adminuser==0){multiline=2}else{if(multiline>5){multiline=5}}
-    }else{
-        if(ismulti==0&&adminuser==0){multiline=1}else{if(multiline>5){multiline=5}}
-    }
+
+    if(ismulti==0&&adminuser==0){multiline=2}else{if(multiline>5){multiline=5}}
     if(config.testcheck==1){multiline=10}
-    
+    require(config.依赖.match(/https.*\//)[0] + 'SrcJyAuto.js');
     //明码解析线程代码
     var parsetask = function(obj) {
         var rurl = "";
         if(obj.lx=="J"){
-            rurl = ParseS[obj.parsename](obj.vipUrl);
-        }else{
-            
-        }
-        
-        if(/^function/.test(obj.ulist.parse.trim())){
-            eval('var JSparse = '+obj.ulist.parse)
-            var rurl = JSparse(obj.vipUrl);
-            if(obj.testurl(rurl,obj.ulist.name)==0){
-                rurl = "";
-            }                    
-            obj.ulist['x5'] = 0;
-            return {url: rurl,ulist: obj.ulist}; 
-        }else{            
-            var taskheader = {withStatusCode:true,timeout:5000};
-            let head = obj.ulist.header||{};
-            if(JSON.stringify(head) != "{}"){
-                taskheader['header'] = head;
-            }
-            var getjson = JSON.parse(request(obj.ulist.parse+obj.vipUrl,taskheader));
+            rurl = ParseS[obj.name](vipUrl);
+        }else if(obj.lx=="U"){
+            let taskheader = {withStatusCode:true,timeout:3000};
+            let getjson = JSON.parse(request(obj.url+vipUrl,taskheader));
             if (getjson.body&&getjson.statusCode==200){
-                var gethtml = getjson.body;
-                var rurl = "";
+                let gethtml = getjson.body;
                 try {
                     rurl = JSON.parse(gethtml).url||JSON.parse(gethtml).data.url||JSON.parse(gethtml).data;
                 } catch (e) {
-                    if(/\.m3u8|\.mp4/.test(getjson.url)&&getjson.url.indexOf('=http')==-1){
+                    if(contain.test(getjson.url)&&getjson.url.indexOf('=http')==-1){
                         rurl = getjson.url;
-                    }else if(/\.m3u8|\.mp4|\.flv/.test(gethtml)){
+                    }else if(contain.test(gethtml)){
                         try {
                             if(gethtml.indexOf('urls = "') != -1){
                                 rurl = gethtml.match(/urls = "(.*?)"/)[1];
@@ -500,18 +479,18 @@ var aytmParse = function (vipUrl,parseStr) {
                         }
                     }
                 }
-                var x5 = 0;
+                let x5 = 0;
                 if(rurl == ""){
-                    if(!/404 /.test(gethtml)&&obj.ulist.parse.indexOf('key=')==-1){
+                    if(!/404 /.test(gethtml)&&obj.url.indexOf('key=')==-1){
                         if(x5jxlist.length<=5){
-                            x5jxlist.push(obj.ulist.parse);
-                            if(printlog==1){log(obj.ulist.name + '>加入x5嗅探列表');}
-                            x5namelist.push(obj.ulist.name);
+                            x5jxlist.push(obj.url);
+                            x5nmlist.push(obj.name);
+                            if(printlog==1){log(obj.name + '>加入x5嗅探列表');}
                         }
                         x5 = 1;
                     }
                 }else{
-                    if(obj.testurl(rurl,obj.ulist.name)==0){
+                    if(obj.testurl(rurl,obj.name)==0){
                         rurl = "";
                     }
                 }
@@ -522,6 +501,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 return {url: "",ulist: obj.ulist}; 
             }
         }
+
     };
     if(config.testcheck==1){showLoading('JS免嗅解析列表，检测中')};
 
@@ -552,7 +532,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 obj.names.push(id);
                 obj.errors.push(error);
 
-                if (AppVer>=2909&&ismulti!=1&&config.testcheck!=1&&contain.test(taskResult)&&!exclude.test(taskResult)) {
+                if (ismulti!=1&&config.testcheck!=1&&contain.test(taskResult)&&!exclude.test(taskResult)) {
                     //toast("我主动中断了");
                     log("√线程中止");
                     return "break";
@@ -664,7 +644,7 @@ var aytmParse = function (vipUrl,parseStr) {
                     obj.names.push(id);
                     obj.errors.push(error);
 
-                    if (AppVer>=2909&&ismulti!=1&&config.testcheck!=1&&contain.test(taskResult)&&!exclude.test(taskResult)) {
+                    if (ismulti!=1&&config.testcheck!=1&&contain.test(taskResult)&&!exclude.test(taskResult)) {
                         //toast("我主动中断了");
                         log("√线程中止");
                         return "break";
@@ -777,7 +757,7 @@ var aytmParse = function (vipUrl,parseStr) {
                     obj.parses.push(id);
                     obj.errors.push(error);
                     
-                    if (AppVer>=2909&&ismulti!=1&&config.testcheck!=1&&contain.test(taskResult)&&!exclude.test(taskResult)) {
+                    if (ismulti!=1&&config.testcheck!=1&&contain.test(taskResult)&&!exclude.test(taskResult)) {
                         log("√线程中止");
                         return "break";
                     }
