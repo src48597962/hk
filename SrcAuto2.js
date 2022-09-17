@@ -433,7 +433,7 @@ var aytmParse = function (vipUrl,parseStr) {
     //if(Uparselist.length > 0){Uparselist.sort(sortData)};
     //if(config.printlog==1){log("√有效解析接口数："+(Jparselist.length+Uparselist.length))};
     if(config.printlog==1){
-        log("√有效解析数："+parselist.length+"，JS解析："+Jparsenum+"，URL解析："+Uparsenum);
+        log("√断插有效解析数："+parselist.length+"(J解析:"+Jparsenum+"，U解析:"+Uparsenum+")");
     };
 
     var exclude = /404\.m3u8|xiajia\.mp4|余额不足\.m3u8/;//设置排除地址
