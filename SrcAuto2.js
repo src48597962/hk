@@ -897,7 +897,9 @@ var SrcParseS = {
         try {
             if (url.trim() == "") {
                 return "toast://解析失败，建议切换线路或更换解析方式";
-            } else {
+            } else if(/^{/.test(url)){
+                return url;
+            }else {
                 if (url[0] == '/') { url = 'https:' + url }
                 if (i == undefined) {
                     if (getMyVar('SrcM3U8', '1') == "1"&&url.indexOf('.m3u8')>-1) {
@@ -963,7 +965,10 @@ var SrcParseS = {
         try {
             if (/\.m3u8/.test(url)) {
                 var urlcode = JSON.parse(fetch(url,{withStatusCode:true,timeout:2000}));
-                if(urlcode.statusCode!=200){
+                if(urlcode.statusCode==-1){
+                    log(name+'>错误：探测超时未拦载，结果未知')
+                    return 1;
+                }else if(urlcode.statusCode!=200){
                     log(name+'>播放地址疑似失效或网络无法访问，不信去验证一下>'+url);
                     return 0;
                 }else{
@@ -979,7 +984,10 @@ var SrcParseS = {
                             urlts = http + urlts;
                         }    
                         var tscode = JSON.parse(fetch(urlts,{onlyHeaders:true,timeout:2000}));
-                        if(tscode.statusCode!=200){
+                        if(tscode.statusCode==-1){
+                            log(name+'>错误：ts段探测超时未拦载，结果未知')
+                            return 1;
+                        }else if(tscode.statusCode!=200){
                             log(name+'>ts段地址疑似失效或网络无法访问，不信去验证一下>'+url);
                             return 0;
                         }
@@ -1001,7 +1009,7 @@ var SrcParseS = {
             }
             return 1;
         } catch (e) {
-            log(name+'>错误：探测超时未拦截，有可能是失败的')
+            log(name+'>错误：探测异常未拦截，有可能是失败的')
             return 1;
         }
     }
