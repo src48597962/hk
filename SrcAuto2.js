@@ -487,10 +487,12 @@ var aytmParse = function (vipUrl,parseStr) {
                 
                 if(rurl == ""){
                     if(!/404 /.test(gethtml)){
-                        if(x5jxlist.length<=5&&obj.url.indexOf('key=')==-1){
-                            x5jxlist.push(obj.url);
-                            x5nmlist.push(obj.name);
-                            if(printlog==1){log(obj.name + '>√加入x5嗅探列表');}
+                        if(obj.url.indexOf('key=')==-1){
+                            if(x5jxlist.length<=5){
+                                x5jxlist.push(obj.url);
+                                x5nmlist.push(obj.name);
+                                if(printlog==1){log(obj.name + '>√加入x5嗅探列表');}
+                            }
                             x5 = 1;//网页可以正常访问，偿试嗅探
                         }else{
                             x5 = 2; //网页404，标记剔除
