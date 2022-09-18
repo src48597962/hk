@@ -25,6 +25,7 @@ var defaultconfig = {
 eval(fetch('hiker://files/cache/SrcSet.js'));//加载用户参数
 if(!userconfig){var config = defaultconfig}else{var config = userconfig}//没有取到用户参数时调用默认参数
 if(getMyVar('Stitle','0').indexOf("帅助手") == -1){config.testcheck=0}
+putMyVar('SrcM3U8',config.cachem3u8);
 
 //加载远程自定义设置
 if(config.iscustom==1){
@@ -638,7 +639,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 }
                 config['x5scslist'] = [];
                 writeFile("hiker://files/cache/SrcSet.js", 'var userconfig = ' + JSON.stringify(config));
-                return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,format);
+                return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
             if(urls.length>1){
@@ -659,8 +660,8 @@ var aytmParse = function (vipUrl,parseStr) {
 };
 
 //x5嗅探通用免嗅函数、自动多层嵌套
-function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, format) {
-    return 'x5Rule://' + x5jxlist[0] + vipUrl + '@' + (typeof $$$ == 'undefined' ? $ : $$$).toString((x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, format, x5Player) => {
+function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl) {
+    return 'x5Rule://' + x5jxlist[0] + vipUrl + '@' + (typeof $$$ == 'undefined' ? $ : $$$).toString((x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl, x5Player) => {
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
@@ -737,15 +738,15 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     }
                 }
                 if(parmset.printlog==1){ if(parmset.testcheck==1){fba.log("√检测下一个嗅探接口："+x5nmlist.slice(1)[0]);}else{fba.log("√超过"+window.c * 250+"毫秒还未成功,此接口已失败"+failsum+"次，跳转下一个嗅探接口："+x5nmlist.slice(1)[0])}};
-                return x5Player(x5jxlist.slice(1), x5nmlist.slice(1), vipUrl, sortlist, parmset, faillist, format);
+                return x5Player(x5jxlist.slice(1), x5nmlist.slice(1), vipUrl, sortlist, parmset, faillist, formatUrl);
             }
         }
         //fba.log(fy_bridge_app.getUrls());
         var urls = _getUrls();
-        var exclude = /playm3u8|m3u8\.tv|404\.m3u8|xiajia\.mp4|余额不足\.m3u8/;
-        var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/;
+        var exclude = /\/404\.m3u8|\/xiajia\.mp4|\/余额不足\.m3u8|\.css|\.js|\.gif|\.png|\.jpeg|api\.m3u88\.com/;//设置排除地址
+        var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/;//设置符合条件的正确地址
         for (var i in urls) {
-            if (!exclude.test(urls[i]) && contain.test(urls[i])) {
+            if (!exclude.test(urls[i]) && contain.test(urls[i]) && urls[i].indexOf('=http')==-1) {
                 if(parmset.printlog==1){fy_bridge_app.log("√嗅探解析成功>"+urls[i])};
                 if(parmset.issort==1){fy_bridge_app.writeFile("hiker://files/cache/SrcSort.json", JSON.stringify(sortlist))};
                 if(parmset.testcheck==1){
@@ -754,24 +755,13 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
                     window.c = 100;
                 }else{
-                    return $$$("#noLoading#").lazyRule((url,format)=>{
-                        return format.urlJoinUa(format.urlCacheM3u8(url,format.urlJoinUa(url,1))) + '#isVideo=true#'; 
-                    }, urls[i], format);
-                    /*
-                    let url = "";
-                    if (/bilibili|bilivideo/.test(urls[i])) {
-                        url = urls[i] + ';{User-Agent@Mozilla/5.0&&Referer@https://www.bilibili.com/}';
-                    } else if (/mgtv|sohu/.test(urls[i])) {
-                        url = urls[i] + ';{User-Agent@Mozilla/5.0 (Windows NT 10.0)}';
-                    } else {
-                        url = urls[i];
-                    }
-                    return url + '#isVideo=true#';
-                    */
+                    return $$$("#noLoading#").lazyRule((url,formatUrl)=>{
+                        return formatUrl(url); 
+                    }, urls[i], formatUrl);
                 }
             }
         } 
-    }, x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, format, x5Player)
+    }, x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl, x5Player)
 };
 
 var SrcParseS = {
@@ -784,7 +774,7 @@ var SrcParseS = {
             }else {
                 if (url[0] == '/') { url = 'https:' + url }
                 if (i == undefined) {
-                    if (config.cachem3u8==1&&url.indexOf('.m3u8')>-1) {
+                    if (getMyVar('SrcM3U8', '1') == "1"&&url.indexOf('.m3u8')>-1) {
                         url = cacheM3u8(url, {timeout: 2000});
                     }
                     if(url.indexOf('User-Agent')==-1){
@@ -797,7 +787,7 @@ var SrcParseS = {
                         }
                     }
                 } else {
-                    if ((config.cachem3u8==1||url.indexOf('vkey=')>-1)&&url.indexOf('.m3u8')>-1) {
+                    if ((getMyVar('SrcM3U8', '1') == "1"||url.indexOf('vkey=')>-1)&&url.indexOf('.m3u8')>-1) {
                         url = cacheM3u8(url, {timeout: 2000}, 'video' + parseInt(i) + '.m3u8') + '#pre#';
                     }
                 }
@@ -826,7 +816,7 @@ var SrcParseS = {
     formatMulUrl: function (url,i) {
         try {
             let header = this.mulheader(url);
-            if ((config.cachem3u8==1||url.indexOf('vkey=')>-1)&&url.indexOf('.m3u8')>-1) {
+            if ((getMyVar('SrcM3U8', '1') == "1"||url.indexOf('vkey=')>-1)&&url.indexOf('.m3u8')>-1) {
                 var name = 'video'+parseInt(i)+'.m3u8';
                 url = cacheM3u8(url, {headers: header, timeout: 2000}, name)+'#pre#';
             }
