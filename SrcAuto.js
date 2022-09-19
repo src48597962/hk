@@ -23,15 +23,11 @@ var defaultconfig = {
     "remotepath": ""//远程在线文件地址
 }
 var cfgfile = "hiker://files/rules/Src/Auto/config.json";
-if (!fileExist(cfgfile)&&fileExist('hiker://files/cache/SrcSet.js')) {
-    eval(fetch('hiker://files/cache/SrcSet.js').replace('userconfig','oldconfig'));
-    writeFile(cfgfile, JSON.stringify(oldconfig));
-}
 var Autocfg=fetch(cfgfile);
 if(Autocfg){
     eval("var userconfig=" + Autocfg+ ";");//加载用户参数
 }
-//eval(fetch('hiker://files/cache/SrcSet.js'));//加载用户参数
+
 if(!userconfig){var SAconfig = defaultconfig}else{var SAconfig = userconfig}//没有取到用户参数时调用默认参数
 var testcheck = SAconfig.testcheck;
 var printlog = SAconfig.printlog;
@@ -57,10 +53,6 @@ if(SAconfig.iscustom==1){
 
 var sortlist = []; //排序降权临时存放数组
 var sortfile = "hiker://files/rules/Src/Auto/SrcSort.json";
-if (!fileExist(sortfile)&&fileExist('hiker://files/cache/SrcSort.json')) {
-    eval("var oldsort=" + fetch(sortfile));
-    writeFile(sortfile, JSON.stringify(oldsort));
-}
 var isresetsort = resetsort || 0;
 if (isresetsort==0&&fileExist(sortfile)){
     eval("var newsort=" + fetch(sortfile));
