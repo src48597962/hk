@@ -22,7 +22,12 @@ var defaultconfig = {
     "iscustom": 0,//是否开启远程关怀模式，自定义解析设置开关：0关闭/1开启
     "remotepath": ""//远程在线文件地址
 }
-eval(fetch('hiker://files/cache/SrcSet.js'));//加载用户参数
+var cfgfile = "hiker://files/rules/Src/Auto/config.json";
+var Autocfg=fetch(cfgfile);
+if(Autocfg){
+    eval("var userconfig=" + Autocfg+ ";");//加载用户参数
+}
+//eval(fetch('hiker://files/cache/SrcSet.js'));//加载用户参数
 if(!userconfig){var SAconfig = defaultconfig}else{var SAconfig = userconfig}//没有取到用户参数时调用默认参数
 var testcheck = SAconfig.testcheck;
 var printlog = SAconfig.printlog;
@@ -320,7 +325,8 @@ var aytmParse = function (vipUrl,parseStr) {
     }
     if(dellist.length > 0){
         SAconfig['dellist'] = dellist;
-        writeFile("hiker://files/cache/SrcSet.js", 'var userconfig = ' + JSON.stringify(SAconfig))
+        //writeFile("hiker://files/cache/SrcSet.js", 'var userconfig = ' + JSON.stringify(SAconfig))
+        writeFile(cfgfile, JSON.stringify(SAconfig));
         if(printlog == 1){log("√建议删除解析口:"+dellist);}
     }
     if(parselist.length == 0){
@@ -641,7 +647,7 @@ var aytmParse = function (vipUrl,parseStr) {
                     faillist.push(x5nmlist[i]);
                 }
                 SAconfig['x5scslist'] = [];
-                writeFile("hiker://files/cache/SrcSet.js", 'var userconfig = ' + JSON.stringify(SAconfig));
+                writeFile(cfgfile, JSON.stringify(SAconfig));
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
@@ -668,6 +674,11 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
+        var cfgfile = "hiker://files/rules/Src/Auto/config.json";
+        var Autocfg=fetch(cfgfile);
+        if(Autocfg){
+            eval("var userconfig=" + Autocfg+ ";");//加载用户参数
+        }
         if (window.c == null) {
             window.c = 0;
             if(parmset.testcheck==1){fba.showLoading('嗅探解析列表，检测中')}else{fba.showLoading('√嗅探解析中，请稍候')};
@@ -693,7 +704,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 fba.writeFile("hiker://files/cache/srcsort.json", JSON.stringify(sortlist));
                 fba.hideLoading();
 
-                eval(request("hiker://files/cache/SrcSet.js"));
+                //eval(request("hiker://files/cache/SrcSet.js"));
                 for(var i = 0; i < userconfig.x5scslist.length; i++) {
                     faillist.splice(faillist.indexOf(userconfig.x5scslist[i]),1);
                 }
@@ -753,9 +764,10 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 if(parmset.printlog==1){fy_bridge_app.log("√嗅探解析成功>"+urls[i])};
                 if(parmset.issort==1){fy_bridge_app.writeFile("hiker://files/cache/SrcSort.json", JSON.stringify(sortlist))};
                 if(parmset.testcheck==1){
-                    eval(request("hiker://files/cache/SrcSet.js"));
+                    //eval(request("hiker://files/cache/SrcSet.js"));
                     userconfig.x5scslist.push(x5nmlist[0]);
-                    fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
+                    //fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
+                    fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
                     window.c = 100;
                 }else{
                     return $$$("#noLoading#").lazyRule((url,formatUrl)=>{
