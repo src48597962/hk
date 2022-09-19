@@ -56,18 +56,16 @@ if(SAconfig.iscustom==1){
 }else{var resetsort = 0};
 
 var sortfile = "hiker://files/rules/Src/Auto/SrcSort.json";
-if (!fileExist(sortfile)&&fileExist('hiker://files/cache/SrcSort.js')) {
-    eval("let oldsort=" + fetch(sortfile));
+if (!fileExist(sortfile)&&fileExist('hiker://files/cache/SrcSort.json')) {
+    eval("var oldsort=" + fetch(sortfile));
     writeFile(sortfile, JSON.stringify(oldsort));
 }
 var sortlist = []; //排序降权临时存放数组
 var isresetsort = resetsort || 0;
-if (isresetsort==0){
+if (isresetsort==0&&fileExist(sortfile)){
     //var sortfile=fetch("hiker://files/cache/SrcSort.json");
-    if(sortfile){
-        eval("var newsort=" + fetch(sortfile));
-        Object.assign(sortlist, newsort);
-    }
+    eval("var newsort=" + fetch(sortfile));
+    Object.assign(sortlist, newsort);
 }
 
 //自动解析入口
