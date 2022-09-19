@@ -57,11 +57,12 @@ if(SAconfig.iscustom==1){
 
 var sortlist = []; //排序降权临时存放数组
 var sortfile = "hiker://files/rules/Src/Auto/SrcSort.json";
-/*
 if (!fileExist(sortfile)&&fileExist('hiker://files/cache/SrcSort.json')) {
     eval("var oldsort=" + fetch(sortfile));
     writeFile(sortfile, JSON.stringify(oldsort));
 }
+/*
+
 var isresetsort = resetsort || 0;
 if (isresetsort==0&&fileExist(sortfile)){
     //var sortfile=fetch("hiker://files/cache/SrcSort.json");
