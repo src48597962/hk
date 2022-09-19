@@ -64,8 +64,8 @@ var sortlist = []; //排序降权临时存放数组
 var isresetsort = resetsort || 0;
 if (isresetsort==0){
     //var sortfile=fetch("hiker://files/cache/SrcSort.json");
-    if(sortfile != ""){
-        eval("var newsort=" + sortfile+ ";");
+    if(sortfile){
+        eval("var newsort=" + fetch(sortfile));
         Object.assign(sortlist, newsort);
     }
 }
