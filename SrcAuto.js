@@ -417,13 +417,15 @@ var aytmParse = function (vipUrl,parseStr) {
     };
     //清理sort排序文件线程代码
     var sorttask = function(obj) {
+        let sortdel =[];
         for(var j=0;j<sortlist.length;j++){
             if(!parselist.some(item => item.name==sortlist[j].name)){ 
-                if(printlog==1){log(sortlist[j].name+'不存在，从sort文件中删除')}
+                sortdel.push(sortlist[j].name);
                 sortlist.splice(j,1);
                 j = j - 1;
             }
         }
+        if(printlog==1&&sortdel.length>0){log(sortdel.join(',') + '>从sort文件中删除')}
         return obj;
     };
 
@@ -485,7 +487,7 @@ var aytmParse = function (vipUrl,parseStr) {
         for(let k in beids){
             parsename = beids[k].split('|')[1];
             parselx = beids[k].split('|')[0];
-            if(printlog==1){log("√"+ parsename + ">" + parselx + "解析结果检查")};
+            //if(printlog==1){log("√"+ parsename + ">" + parselx + "解析结果检查")};
             if(beerrors[k]==null){
                 parseurl = beresults[k].rurl;
                 if(SAconfig.jstoweb==1&&parselx=="J"&&parseurl.search(/x5Rule|webRule/)>-1){
@@ -495,7 +497,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 }else{
                     if (contain.test(parseurl) && !exclude.test(parseurl)) {
                         if(playurl==""){playurl = parseurl;}
-                        if(printlog==1){log("√"+parselx+"解析成功>" + parseurl)};  
+                        if(printlog==1){log("√"+parsename+">"+parselx+"解析成功>" + parseurl)};  
                         if(testcheck==1){
                             playurl = "";
                         }else{
@@ -563,13 +565,13 @@ var aytmParse = function (vipUrl,parseStr) {
                                 }
                             }
                             if(testcheck==1){faillist.push(parsename)};
-                            if(printlog==1){log("√解析失败,已失败"+failsum+"次，跳过")};   
+                            if(printlog==1){log("√"+parsename+">解析失败,已失败"+failsum+"次，跳过")};   
                         }
                     }
                 }
             }else{
                 if(testcheck==1){faillist.push(parsename)};
-                if(printlog==1){log(beerrors[k]+" √此解析有语法错误，跳过")};
+                if(printlog==1){log(beerrors[k]+"√"+parsename+">此解析有语法错误，跳过")};
                 for(var j=0;j<sortlist.length;j++){
                     if(sortlist[j].name == parsename){ 
                         sortlist[j].sort = sortlist[j].sort+1;
@@ -607,7 +609,7 @@ var aytmParse = function (vipUrl,parseStr) {
                         log('√解析失败的>'+faillist);
                         refreshPage(false);
                     }else{
-                        log('√JS免嗅和URL明码接口失败、网页嗅探未取到解析口，需重新配置插件')
+                        log('√JS免嗅和URL明码解析失败、无嗅探解析，需重新配置插件')
                     }
                 };
                 if(testcheck==1){
@@ -631,7 +633,7 @@ var aytmParse = function (vipUrl,parseStr) {
                     return "toast://未找到可用的解析口"
                 }
             } else {
-                if(printlog==1){if(testcheck==1){log("√JS免嗅和URL明码检测结束，转网页嗅探检测接口数："+x5jxlist.length)}else{log("√JS免嗅和URL明码失败，转网页嗅探解析接口数："+x5jxlist.length)}};
+                if(printlog==1){if(testcheck==1){log("√JS免嗅和URL明码检测结束，转嗅探检测接口数："+x5jxlist.length)}else{log("√JS免嗅和URL明码失败，转嗅探解析接口数："+x5jxlist.length)}};
                 if(printlog==1){log("√嗅探调用解析口："+x5nmlist[0])};
                 if(testcheck==1){showLoading('嗅探解析列表，检测中')}else{showLoading('√嗅探解析中，请稍候')};
                 let parmset = {"issort":0,"printlog":printlog,"timeout":SAconfig.x5timeout,"autoselect":SAconfig.autoselect,"failcount":SAconfig.failcount,"from":from,"testcheck":testcheck,"parseStr":parseStr,"helper":getMyVar('helper','0'),"Sversion":parseInt(getMyVar('Sversion','0'))};
@@ -719,7 +721,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                         return "toast://〖"+parmset.parseStr+"〗解析失败";
                     }
                 }else{
-                    return "toast://所有解析接口失败了，请重新配置断插解析接口";
+                    return "toast://所有解析都失败了，请重新配置断插解析";
                 };
             } else {
                 //X5解析失败了，排序+1
@@ -738,7 +740,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                         break;
                     }
                 }
-                if(parmset.printlog==1){ if(parmset.testcheck==1){fba.log("√检测下一个嗅探接口："+x5nmlist.slice(1)[0]);}else{fba.log("√超过"+window.c * 250+"毫秒还未成功,此接口已失败"+failsum+"次，跳转下一个嗅探接口："+x5nmlist.slice(1)[0])}};
+                if(parmset.printlog==1){ if(parmset.testcheck==1){fba.log("√检测下一个嗅探解析："+x5nmlist.slice(1)[0]);}else{fba.log("√超过"+window.c * 250+"毫秒还未成功,此解析已失败"+failsum+"次，跳转下一个嗅探解析："+x5nmlist.slice(1)[0])}};
                 return x5Player(x5jxlist.slice(1), x5nmlist.slice(1), vipUrl, sortlist, parmset, faillist, formatUrl);
             }
         }
