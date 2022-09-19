@@ -1,13 +1,7 @@
 function homepage(helper) {
-    var cloudVersion = 6.23;//插件版本号，判断是否需要更新
+    var cloudVersion = 7.01;//插件版本号，判断是否需要更新
 
     var d = [];
-    if(getAppVersion()<2579){
-        d.push({
-            title: "先更新软件版本，否则无法正常使用" ,
-            col_type: "rich_text"
-        });
-    }
     //判断是否有断插小程序
     var Dnzt = 0;
     if(fileExist('hiker://files/cache/MyParseSet.json')&&fileExist('hiker://files/rules/DuanNian/MyParse.json')){var isDn = 1}else{var isDn = 0};
