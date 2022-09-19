@@ -379,7 +379,7 @@ var aytmParse = function (vipUrl,parseStr) {
                                 //if(printlog==1){log('将日志提交给作者，帮助完善解析逻辑>>>'+gethtml)};
                             }
                         } catch (e) {
-                            if(printlog==1){log('√明码获取错误：'+e.message)};
+                            //if(printlog==1){log('√明码获取错误：'+e.message)};
                         }
                     }
                 }
@@ -405,7 +405,7 @@ var aytmParse = function (vipUrl,parseStr) {
         }
         if(rurl){   
             if(/^toast/.test(rurl)){
-                if(printlog==1){log(obj.name+'>提示：'+rurl.replace('toast://',''))};
+                if(printlog==1){log(obj.name+'>√提示：'+rurl.replace('toast://',''))};
                 rurl = "";
             }else if(/^http/.test(rurl)&&SrcParseS.testvideourl(rurl,obj.name)==0){
                 //检测地址有效性
@@ -425,7 +425,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 j = j - 1;
             }
         }
-        if(printlog==1&&sortdel.length>0){log(sortdel.join(',') + '>从sort文件中删除')}
+        if(printlog==1&&sortdel.length>0){log(sortdel.join(',') + '>√从sort文件中删除')}
         return obj;
     };
 
@@ -497,7 +497,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 }else{
                     if (contain.test(parseurl) && !exclude.test(parseurl)) {
                         if(playurl==""){playurl = parseurl;}
-                        if(printlog==1){log("√"+parsename+">"+parselx+"解析成功>" + parseurl)};  
+                        if(printlog==1){log(parsename+">√"+parselx+"解析成功>" + parseurl)};  
                         if(testcheck==1){
                             playurl = "";
                         }else{
@@ -565,13 +565,13 @@ var aytmParse = function (vipUrl,parseStr) {
                                 }
                             }
                             if(testcheck==1){faillist.push(parsename)};
-                            if(printlog==1){log("√"+parsename+">解析失败,已失败"+failsum+"次，跳过")};   
+                            if(printlog==1){log(parsename+">√"+parselx+"解析失败,已失败"+failsum+"次，跳过")};   
                         }
                     }
                 }
             }else{
                 if(testcheck==1){faillist.push(parsename)};
-                if(printlog==1){log(beerrors[k]+"√"+parsename+">此解析有语法错误，跳过")};
+                if(printlog==1){log(parsename+">√此解析有语法错误，跳过>"+beerrors[k])};
                 for(var j=0;j<sortlist.length;j++){
                     if(sortlist[j].name == parsename){ 
                         sortlist[j].sort = sortlist[j].sort+1;
@@ -588,7 +588,7 @@ var aytmParse = function (vipUrl,parseStr) {
 
     if(issort==1&&!parseStr){writeFile("hiker://files/cache/SrcSort.json", JSON.stringify(sortlist))};
 
-//上面js免嗅、json、明码解析、剔除打不开网站做完了
+    //上面js免嗅、json、明码解析、剔除打不开网站做完了
     try {
         if (playurl=="") {
             function uniq(array){
@@ -838,10 +838,10 @@ var SrcParseS = {
                 var urlcode = JSON.parse(fetch(url,{withStatusCode:true,timeout:2000}));
                 //log(name+'url访问状态码：'+urlcode.statusCode)
                 if(urlcode.statusCode==-1){
-                    log(name+'>m3u8探测超时未拦载，结果未知')
+                    log(name+'>√m3u8探测超时未拦载，结果未知')
                     return 1;
                 }else if(urlcode.statusCode!=200){
-                    log(name+'>m3u8播放地址疑似失效或网络无法访问，不信去验证一下>'+url);
+                    log(name+'>√m3u8播放地址疑似失效或网络无法访问，不信去验证一下>'+url);
                     return 0;
                 }else{
                     try{
@@ -852,7 +852,7 @@ var SrcParseS = {
                         var urltss = [];
                     }
                     if(parseInt(tstime)*parseInt(urltss.length) < times){
-                        log(name+'>m3u8视频长度小于'+times+'s，疑似跳舞小姐姐或防盗小视频，不信去验证一下>'+url);
+                        log(name+'>√m3u8视频长度小于'+times+'s，疑似跳舞小姐姐或防盗小视频，不信去验证一下>'+url);
                         return 0;
                     }else{
                         var urlts = urltss[0];
@@ -863,10 +863,10 @@ var SrcParseS = {
                         var tscode = JSON.parse(fetch(urlts,{headers:{'Referer':url},onlyHeaders:true,timeout:2000}));
                         //log(name+'ts访问状态码：'+tscode.statusCode)
                         if(tscode.statusCode==-1){
-                            log(name+'>ts段探测超时未拦载，结果未知')
+                            log(name+'>√ts段探测超时未拦载，结果未知')
                             return 1;
                         }else if(tscode.statusCode!=200){
-                            log(name+'>ts段地址疑似失效或网络无法访问，不信去验证一下>'+url);
+                            log(name+'>√ts段地址疑似失效或网络无法访问，不信去验证一下>'+url);
                             return 0;
                         }
                     }
@@ -874,22 +874,22 @@ var SrcParseS = {
             }else if (/\.mp4/.test(url)) {
                 var urlheader = JSON.parse(fetch(url,{onlyHeaders:true,timeout:2000}));
                 if(urlheader.statusCode==-1){
-                    log(name+'>mp4探测超时未拦载，结果未知')
+                    log(name+'>√mp4探测超时未拦载，结果未知')
                     return 1;
                 }else if(urlheader.statusCode!=200){
-                    log(name+'>mp4播放地址疑似失效或网络无法访问，不信去验证一下>'+url);
+                    log(name+'>√mp4播放地址疑似失效或网络无法访问，不信去验证一下>'+url);
                     return 0;
                 }else{
                     var filelength = urlheader.headers['content-length'];
                     if(parseInt(filelength[0])/1024/1024 < 80){
-                        log(name+'>mp4播放地址疑似跳舞小姐姐或防盗小视频，不信去验证一下>'+url);
+                        log(name+'>√mp4播放地址疑似跳舞小姐姐或防盗小视频，不信去验证一下>'+url);
                         return 0;
                     }
                 }
             }
             return 1;
         } catch(e) {
-            log(name+'>错误：探测异常未拦截，可能是失败的>'+e.message)
+            log(name+'>√错误：探测异常未拦截，可能是失败的>'+e.message)
             return 1;
         }
     }
