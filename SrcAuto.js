@@ -54,7 +54,7 @@ if(SAconfig.iscustom==1){
         SAconfig.iscustom = 0;
     }
 }else{var resetsort = 0};
-
+/*
 var sortfile = "hiker://files/rules/Src/Auto/SrcSort.json";
 if (!fileExist(sortfile)&&fileExist('hiker://files/cache/SrcSort.json')) {
     eval("var oldsort=" + fetch(sortfile));
@@ -67,7 +67,7 @@ if (isresetsort==0&&fileExist(sortfile)){
     eval("var newsort=" + fetch(sortfile));
     Object.assign(sortlist, newsort);
 }
-
+*/
 //自动解析入口
 var aytmParse = function (vipUrl,parseStr) {
     if(printlog==1){
