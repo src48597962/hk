@@ -23,6 +23,10 @@ var defaultconfig = {
     "remotepath": ""//远程在线文件地址
 }
 var cfgfile = "hiker://files/rules/Src/Auto/config.json";
+if (!fileExist(cfgfile)&&fileExist('hiker://files/cache/SrcSet.js')) {
+    eval(fetch('hiker://files/cache/SrcSet.js').replace('userconfig','oldconfig'));
+    writeFile(cfgfile, JSON.stringify(oldconfig));
+}
 var Autocfg=fetch(cfgfile);
 if(Autocfg){
     eval("var userconfig=" + Autocfg+ ";");//加载用户参数
@@ -51,10 +55,15 @@ if(SAconfig.iscustom==1){
     }
 }else{var resetsort = 0};
 
+var sortfile = "hiker://files/rules/Src/Auto/SrcSort.json";
+if (!fileExist(sortfile)&&fileExist('hiker://files/cache/SrcSort.js')) {
+    eval("let oldsort=" + sortfile+ ";");
+    writeFile(sortfile, JSON.stringify(oldsort));
+}
 var sortlist = []; //排序降权临时存放数组
 var isresetsort = resetsort || 0;
 if (isresetsort==0){
-    var sortfile=fetch("hiker://files/cache/SrcSort.json");
+    //var sortfile=fetch("hiker://files/cache/SrcSort.json");
     if(sortfile != ""){
         eval("var newsort=" + sortfile+ ";");
         Object.assign(sortlist, newsort);
@@ -592,7 +601,7 @@ var aytmParse = function (vipUrl,parseStr) {
         }//多线程结果处理
     }//循环结束
 
-    if(issort==1&&!parseStr){writeFile("hiker://files/cache/SrcSort.json", JSON.stringify(sortlist))};
+    if(issort==1&&!parseStr){writeFile(sortfile, JSON.stringify(sortlist))};
 
     //上面js免嗅、json、明码解析、剔除打不开网站做完了
     try {
@@ -701,7 +710,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                         break;
                     }
                 }
-                fba.writeFile("hiker://files/cache/srcsort.json", JSON.stringify(sortlist));
+                fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
                 fba.hideLoading();
 
                 //eval(request("hiker://files/cache/SrcSet.js"));
@@ -762,7 +771,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         for (var i in urls) {
             if (!exclude.test(urls[i]) && contain.test(urls[i]) && urls[i].indexOf('=http')==-1) {
                 if(parmset.printlog==1){fy_bridge_app.log("√嗅探解析成功>"+urls[i])};
-                if(parmset.issort==1){fy_bridge_app.writeFile("hiker://files/cache/SrcSort.json", JSON.stringify(sortlist))};
+                if(parmset.issort==1){fy_bridge_app.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist))};
                 if(parmset.testcheck==1){
                     //eval(request("hiker://files/cache/SrcSet.js"));
                     userconfig.x5scslist.push(x5nmlist[0]);
