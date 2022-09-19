@@ -66,7 +66,7 @@ if (isresetsort==0&&fileExist(sortfile)){
     eval("var newsort=" + fetch(sortfile));
     Object.assign(sortlist, newsort);
 }
-log(sortlist)
+
 //自动解析入口
 var aytmParse = function (vipUrl,parseStr) {
     if(printlog==1){
