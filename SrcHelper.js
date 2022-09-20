@@ -1,7 +1,12 @@
 function homepage(helper) {
     var cloudVersion = 7.01;//插件版本号，判断是否需要更新
     if(config.SrcSet=='hiker://files/cache/SrcSet.js'){
-        return 'toast://请更新帅助手';
+        confirm({
+            title:'帅助手发现新版本，是否更新？', 
+            content:'', 
+            confirm:``, 
+            cancel:''
+        })
     }
 
     if (!fileExist('hiker://files/rules/Src/Auto/config.json')&&fileExist('hiker://files/cache/SrcSet.js')) {
