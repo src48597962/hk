@@ -2,9 +2,9 @@ function homepage(helper) {
     var cloudVersion = 7.01;//插件版本号，判断是否需要更新
     if(config.SrcSet=='hiker://files/cache/SrcSet.js'){
         confirm({
-            title:'帅助手发现新版本，是否更新？', 
+            title:'发现新版本，是否更新？', 
             content:'版本号：11', 
-            confirm:`rule://https://pasteme.tyrantg.com/xxxxxx/1kh9o33jk5jo3kjp@OcVpSw`, 
+            confirm:`parsePaste(https://pasteme.tyrantg.com/xxxxxx/1kh9o33jk5jo3kjp@OcVpSw)`, 
             cancel:''
         })
     }else{
