@@ -2,12 +2,16 @@ function homepage(helper) {
     var cloudVersion = 7.01;//插件版本号，判断是否需要更新
 
     if (!fileExist('hiker://files/rules/Src/Auto/config.json')&&fileExist('hiker://files/cache/SrcSet.js')) {
-        eval(fetch('hiker://files/cache/SrcSet.js').replace('userconfig','oldconfig'));
-        writeFile('hiker://files/rules/Src/Auto/config.json', JSON.stringify(oldconfig));
+        try{
+            eval(fetch('hiker://files/cache/SrcSet.js').replace('userconfig','oldconfig'));
+            writeFile('hiker://files/rules/Src/Auto/config.json', JSON.stringify(oldconfig));
+        }catch(e){}
     }
     if (!fileExist('hiker://files/rules/Src/Auto/SrcSort.json')&&fileExist('hiker://files/cache/SrcSort.json')) {
-        eval("var oldsort=" + fetch('hiker://files/cache/SrcSort.json'));
-        writeFile('hiker://files/rules/Src/Auto/SrcSort.json', JSON.stringify(oldsort));
+        try{
+            eval("var oldsort=" + fetch('hiker://files/cache/SrcSort.json'));
+            writeFile('hiker://files/rules/Src/Auto/SrcSort.json', JSON.stringify(oldsort));
+        }catch(e){}
     }
 
     var d = [];
