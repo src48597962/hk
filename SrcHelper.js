@@ -3,470 +3,470 @@ function homepage(helper) {
     if(config.SrcSet=='hiker://files/cache/SrcSet.js'){
         confirm({
             title:'帅助手发现新版本，是否更新？', 
-            content:'1111', 
-            confirm:`log('11')`, 
+            content:'版本号：11', 
+            confirm:`rule://https://pasteme.tyrantg.com/xxxxxx/1kh9o33jk5jo3kjp@OcVpSw`, 
             cancel:''
         })
-    }
-
-    if (!fileExist('hiker://files/rules/Src/Auto/config.json')&&fileExist('hiker://files/cache/SrcSet.js')) {
-        try{
-            eval(fetch('hiker://files/cache/SrcSet.js').replace('userconfig','oldconfig'));
-            writeFile('hiker://files/rules/Src/Auto/config.json', JSON.stringify(oldconfig));
-        }catch(e){} 
-    }
-    if (!fileExist('hiker://files/rules/Src/Auto/SrcSort.json')&&fileExist('hiker://files/cache/SrcSort.json')) {
-        try{
-            eval("var oldsort=" + fetch('hiker://files/cache/SrcSort.json'));
-            writeFile('hiker://files/rules/Src/Auto/SrcSort.json', JSON.stringify(oldsort));
-        }catch(e){}
-    }
-
-    var d = [];
-    //判断是否有断插小程序
-    var Dnzt = 0;
-    if(fileExist('hiker://files/cache/MyParseSet.json')&&fileExist('hiker://files/rules/DuanNian/MyParse.json')){var isDn = 1}else{var isDn = 0};
-    if(isDn==0){
-        d.push({
-            title: "告警提示：断插必要条件检测不通过<br>建议检查步聚：<br>1.其他渠道安装断插小程序<br>2.断插小程序更新脚本依赖<br>3.断插配置页保存一次配置" ,
-            col_type: "rich_text"
-        });
     }else{
-        try{
-            eval('var DnSet = ' + fetch(config.DnSetOld));
-            var Dnoldcj = DnSet.cj;
-            Dnzt = 1;
-        } catch(e) {
+        if (!fileExist('hiker://files/rules/Src/Auto/config.json')&&fileExist('hiker://files/cache/SrcSet.js')) {
+            try{
+                eval(fetch('hiker://files/cache/SrcSet.js').replace('userconfig','oldconfig'));
+                writeFile('hiker://files/rules/Src/Auto/config.json', JSON.stringify(oldconfig));
+            }catch(e){} 
+        }
+        if (!fileExist('hiker://files/rules/Src/Auto/SrcSort.json')&&fileExist('hiker://files/cache/SrcSort.json')) {
+            try{
+                eval("var oldsort=" + fetch('hiker://files/cache/SrcSort.json'));
+                writeFile('hiker://files/rules/Src/Auto/SrcSort.json', JSON.stringify(oldsort));
+            }catch(e){}
+        }
+
+        var d = [];
+        //判断是否有断插小程序
+        var Dnzt = 0;
+        if(fileExist('hiker://files/cache/MyParseSet.json')&&fileExist('hiker://files/rules/DuanNian/MyParse.json')){var isDn = 1}else{var isDn = 0};
+        if(isDn==0){
             d.push({
-                title: "告警提示：断插旧配置文件损坏<br>建议检查步聚：<br>1.删除hiker://files/cache/MyParseSet.json文件<br>2.断插配置页保存一次配置",
+                title: "告警提示：断插必要条件检测不通过<br>建议检查步聚：<br>1.其他渠道安装断插小程序<br>2.断插小程序更新脚本依赖<br>3.断插配置页保存一次配置" ,
                 col_type: "rich_text"
             });
-        }
-    }
-    if(Dnzt==1){
-        //判断是否有插件，是否首次使用
-        eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
-        if(fetch(config.SrcCj)==""||typeof userconfig == "undefined"){
-            var isCj = 0;
-            var nowVersion = 0;
         }else{
-            var isCj = 1;
-            var nowVersion = fetch(config.SrcCj).match(/SrcVersion = ([\s\S]*?);/)[1];
-        }     
+            try{
+                eval('var DnSet = ' + fetch(config.DnSetOld));
+                var Dnoldcj = DnSet.cj;
+                Dnzt = 1;
+            } catch(e) {
+                d.push({
+                    title: "告警提示：断插旧配置文件损坏<br>建议检查步聚：<br>1.删除hiker://files/cache/MyParseSet.json文件<br>2.断插配置页保存一次配置",
+                    col_type: "rich_text"
+                });
+            }
+        }
+        if(Dnzt==1){
+            //判断是否有插件，是否首次使用
+            eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
+            if(fetch(config.SrcCj)==""||typeof userconfig == "undefined"){
+                var isCj = 0;
+                var nowVersion = 0;
+            }else{
+                var isCj = 1;
+                var nowVersion = fetch(config.SrcCj).match(/SrcVersion = ([\s\S]*?);/)[1];
+            }     
 
-        d.push({
-            title: '‘‘’’<big><span style="color:#0C0000">私家定制',
-            desc: '断插 附加功能',
-            url: `@lazyRule=.js:if(getMyVar('debug','0')=='0'){putMyVar('debug','1');'toast://哥帅不'}else{'toast://哥很帅'}`,
-            col_type: 'text_center_1'
-        });
-        if(isCj==1){
-            if(DnSet.cj ==config.SrcCj){var cjzt = "开"}else{var cjzt = "关"}
-            if(helper == undefined){var helper="0"}
             d.push({
-                title:'解析',
-                col_type: 'input',
-                desc: "请输入解析地址",
-                url: cjzt == "关" ? "'toast://本插件还没有启用呢，无法测试'" : $.toString((userconfig,helper)=>{
-                    let url = getMyVar("playTestUrl", "").trim();
-                    if (url=="") {
-                        return "toast://还没有输入链接";
-                    }
-                    showLoading('调用本插件，智能解析中...');
-                    if(userconfig.testcheck == 1){
-                        refreshPage(false);
-                        putMyVar('ischeck','1');
-                        putMyVar('Stitle',MY_RULE.title);
-                        putMyVar('Sversion',MY_RULE.version);
-                        putMyVar('helper',helper);
-                    }
-                    eval(fetch(config.SrcCj));
-                    if(getMyVar('playTestjx', '')==""||getMyVar('playTestjx', '')=="不指定"){
-                        return aytmParse(url);
-                    }else{
-                        return aytmParse(url,getMyVar('playTestjx'));
-                    }
-                },userconfig,helper),
-                extra: {
-                    titleVisible: true,
-                    ua:PC_UA,
-                    defaultValue: getMyVar('playTestUrl', '') || "",
-                    onChange: 'putMyVar("playTestUrl",input)'
-                }
+                title: '‘‘’’<big><span style="color:#0C0000">私家定制',
+                desc: '断插 附加功能',
+                url: `@lazyRule=.js:if(getMyVar('debug','0')=='0'){putMyVar('debug','1');'toast://哥帅不'}else{'toast://哥很帅'}`,
+                col_type: 'text_center_1'
             });
-
-            eval('let fromUrl =' + request('hiker://page/fromUrl'));
-            eval(fromUrl.rule);
-            d.push({
-                title:'来个影片',
-                url: $(sitelist,3).select((urls)=>{
-                        let url = urls[input];
-                        putMyVar('playTestUrl', url);
-                        refreshPage(true);
-                        return'toast://已选测试片源：' + input;
-                    },urls),
-                col_type: "scroll_button"
-            }); 
-            eval('var DnNew =' + fetch(config.DnSetNew));
-            var jxs = DnNew.title;
-            jxs.unshift('不指定');
-            d.push({
-                title:getMyVar('playTestjx', "")==""?'不指定':getMyVar('playTestjx'),
-                url: $(jxs,3).select(()=>{
-                        let jx = input;
-                        putMyVar('playTestjx', jx);
-                        refreshPage(true);
-                        return'toast://已选指定解析：' + input;
-                    }),
-                col_type: "scroll_button"
-            }); 
-            d.push({
-                title:'断插设置',
-                url: isDn==0?'toast://未找到断插程序，功能受限':fileExist('hiker://files/cache/fileLinksᴰⁿ.txt')?setupPages("设置"):"hiker://page/Route?rule=MyFieldᴰⁿ&type=设置#noRecordHistory#",
-                col_type: "scroll_button"
-            });
-            d.push({
-                title:'解析接口',
-                url: isDn==0?'toast://未找到断插程序，功能受限':fileExist('hiker://files/cache/fileLinksᴰⁿ.txt')?setupPages("编辑"):"hiker://page/Route?rule=MyFieldᴰⁿ&type=编辑#noRecordHistory#",
-                col_type: "scroll_button"
-            });
-            d.push({
-                title:'生成免嗅',
-                url: $("#noHistory##noRecordHistory#hiker://empty").rule((createJParse) => {
-                        createJParse();
-                    },createJParse),
-                col_type: "scroll_button"
-            });
-            d.push({
-                title:'建议处理',
-                url: $('#noLoading#').lazyRule((faildeal) => {
-                        eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
-                        if(userconfig.dellist==undefined||userconfig.dellist.length==0){
-                            return 'toast://运行良好，没有建议处理的解析';
-                        }else{
-                            return $("#noHistory##noRecordHistory#hiker://empty").rule((dellist,faildeal) => {
-                                        faildeal(dellist)
-                                },userconfig.dellist,faildeal);    
+            if(isCj==1){
+                if(DnSet.cj ==config.SrcCj){var cjzt = "开"}else{var cjzt = "关"}
+                if(helper == undefined){var helper="0"}
+                d.push({
+                    title:'解析',
+                    col_type: 'input',
+                    desc: "请输入解析地址",
+                    url: cjzt == "关" ? "'toast://本插件还没有启用呢，无法测试'" : $.toString((userconfig,helper)=>{
+                        let url = getMyVar("playTestUrl", "").trim();
+                        if (url=="") {
+                            return "toast://还没有输入链接";
                         }
-                    },faildeal),
-                col_type: "scroll_button"
-            });
-            d.push({
-                title:'说明',
-                url: 'hiker://empty#' + `@rule=js:var d = [];d.push({title:'本插件是在断插基础上做的一些附加功能<br/>主要特点如下： <br/> 1.实现自动顺序或乱序按成功优先级匹配，自动匹配片源适用解析<br/>2.实现自动排序，对解析失败的接口降权降序、直到超过次数剔除，越用越快<br/>3.支持不同类型解析，顺序为js免嗅+json+明码直链》嗅探<br/>4.智能优选模式下，可配合排除片源手工剔除+断插配置优先，达到智能化+个性化<br/>5.自动处理播放地址，加ua、存本地等操作，尽量提高播放成功率<br/>6.无需测试，本插件会自动跳过失效的，会在日志提示或通过建议删除处理<br/>7.其他项，就请自行探索吧，最后需感谢断佬提供的原版插件！<br/>更新日志<br/>1.整体逻辑全新优先升级，2.处理逻辑更加快捷，3.支持解析结果为对象的形式，4.自动拦截失效的视频地址',col_type: 'rich_text'});setHomeResult(d);`,
-                col_type: "scroll_button"
-            });
-            d.push({
-                title:'♥',
-                url: $(getMyVar('mmgntgmm',""),"秘密功能通关密码").input((onSelect,userconfig)=>{
-                        putMyVar('mmgntgmm',input);
-                        evalPrivateJS("egl9Ie3p8c62hTcY/7uf5QOBFogc9JoL5TzjDI8y7FHLK8tI1lZz+wif+9ZIAdT2U4kW6OB3xHn/4DntdHdgR3n1itkW5qt324e/TIUXzyPLK8tI1lZz+wif+9ZIAdT2yyvLSNZWc/sIn/vWSAHU9heDK8MvAuaeXn99VjHX9GDLK8tI1lZz+wif+9ZIAdT2M6PA9I6Cw1IaeBlI1EueOcocRQPhsOHHIFz2Li4ajujd22Yj+u4odWN15iH1VyOByyvLSNZWc/sIn/vWSAHU9sQnQ8kqIbxqwJSP0AIe+sPLK8tI1lZz+wif+9ZIAdT2jbUT5CRpNMvC0u7rWdsA7xBp1fqeubKC0GZw+eP9pZjLK8tI1lZz+wif+9ZIAdT2yyvLSNZWc/sIn/vWSAHU9oFDvpNO8ikETwJSzGWplOPLK8tI1lZz+wif+9ZIAdT2T3vswDWnXFX9puTrXgi5EMsry0jWVnP7CJ/71kgB1PYn19QRxIda+Tx+nKfD4GRghdlEwnrBbGyJcHloEQbL1ssry0jWVnP7CJ/71kgB1PbT/drCgPUivvzR7Kn9dwjryyvLSNZWc/sIn/vWSAHU9vKDrRGwYMdB6vUbdkuIA6M=")
-                        let jsid = verification(input);
-                        if(jsid == "1"){
-                            putMyVar('isadmin', '1');
+                        showLoading('调用本插件，智能解析中...');
+                        if(userconfig.testcheck == 1){
                             refreshPage(false);
-                            if(userconfig.ismulti==undefined||userconfig.ismulti==0){var multi = "开启"}else{var multi = "关闭"}
-                            return $([multi+"多线路","多线程数量"],2,"哈喽LSP,被你发现了秘密功能").select((onSelect)=>{
-                                return onSelect(input);
-                            },onSelect);
-                        }else if(jsid == "2"){
-                            putMyVar('isadmin', '1');
-                            refreshPage(false);
-                            return $(["幸运大抽奖"],2,"没错，你就是“lsp”").select((onSelect)=>{
-                                if(input=="幸运大抽奖"){
+                            putMyVar('ischeck','1');
+                            putMyVar('Stitle',MY_RULE.title);
+                            putMyVar('Sversion',MY_RULE.version);
+                            putMyVar('helper',helper);
+                        }
+                        eval(fetch(config.SrcCj));
+                        if(getMyVar('playTestjx', '')==""||getMyVar('playTestjx', '')=="不指定"){
+                            return aytmParse(url);
+                        }else{
+                            return aytmParse(url,getMyVar('playTestjx'));
+                        }
+                    },userconfig,helper),
+                    extra: {
+                        titleVisible: true,
+                        ua:PC_UA,
+                        defaultValue: getMyVar('playTestUrl', '') || "",
+                        onChange: 'putMyVar("playTestUrl",input)'
+                    }
+                });
+
+                eval('let fromUrl =' + request('hiker://page/fromUrl'));
+                eval(fromUrl.rule);
+                d.push({
+                    title:'来个影片',
+                    url: $(sitelist,3).select((urls)=>{
+                            let url = urls[input];
+                            putMyVar('playTestUrl', url);
+                            refreshPage(true);
+                            return'toast://已选测试片源：' + input;
+                        },urls),
+                    col_type: "scroll_button"
+                }); 
+                eval('var DnNew =' + fetch(config.DnSetNew));
+                var jxs = DnNew.title;
+                jxs.unshift('不指定');
+                d.push({
+                    title:getMyVar('playTestjx', "")==""?'不指定':getMyVar('playTestjx'),
+                    url: $(jxs,3).select(()=>{
+                            let jx = input;
+                            putMyVar('playTestjx', jx);
+                            refreshPage(true);
+                            return'toast://已选指定解析：' + input;
+                        }),
+                    col_type: "scroll_button"
+                }); 
+                d.push({
+                    title:'断插设置',
+                    url: isDn==0?'toast://未找到断插程序，功能受限':fileExist('hiker://files/cache/fileLinksᴰⁿ.txt')?setupPages("设置"):"hiker://page/Route?rule=MyFieldᴰⁿ&type=设置#noRecordHistory#",
+                    col_type: "scroll_button"
+                });
+                d.push({
+                    title:'解析接口',
+                    url: isDn==0?'toast://未找到断插程序，功能受限':fileExist('hiker://files/cache/fileLinksᴰⁿ.txt')?setupPages("编辑"):"hiker://page/Route?rule=MyFieldᴰⁿ&type=编辑#noRecordHistory#",
+                    col_type: "scroll_button"
+                });
+                d.push({
+                    title:'生成免嗅',
+                    url: $("#noHistory##noRecordHistory#hiker://empty").rule((createJParse) => {
+                            createJParse();
+                        },createJParse),
+                    col_type: "scroll_button"
+                });
+                d.push({
+                    title:'建议处理',
+                    url: $('#noLoading#').lazyRule((faildeal) => {
+                            eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
+                            if(userconfig.dellist==undefined||userconfig.dellist.length==0){
+                                return 'toast://运行良好，没有建议处理的解析';
+                            }else{
+                                return $("#noHistory##noRecordHistory#hiker://empty").rule((dellist,faildeal) => {
+                                            faildeal(dellist)
+                                    },userconfig.dellist,faildeal);    
+                            }
+                        },faildeal),
+                    col_type: "scroll_button"
+                });
+                d.push({
+                    title:'说明',
+                    url: 'hiker://empty#' + `@rule=js:var d = [];d.push({title:'本插件是在断插基础上做的一些附加功能<br/>主要特点如下： <br/> 1.实现自动顺序或乱序按成功优先级匹配，自动匹配片源适用解析<br/>2.实现自动排序，对解析失败的接口降权降序、直到超过次数剔除，越用越快<br/>3.支持不同类型解析，顺序为js免嗅+json+明码直链》嗅探<br/>4.智能优选模式下，可配合排除片源手工剔除+断插配置优先，达到智能化+个性化<br/>5.自动处理播放地址，加ua、存本地等操作，尽量提高播放成功率<br/>6.无需测试，本插件会自动跳过失效的，会在日志提示或通过建议删除处理<br/>7.其他项，就请自行探索吧，最后需感谢断佬提供的原版插件！<br/>更新日志<br/>1.整体逻辑全新优先升级，2.处理逻辑更加快捷，3.支持解析结果为对象的形式，4.自动拦截失效的视频地址',col_type: 'rich_text'});setHomeResult(d);`,
+                    col_type: "scroll_button"
+                });
+                d.push({
+                    title:'♥',
+                    url: $(getMyVar('mmgntgmm',""),"秘密功能通关密码").input((onSelect,userconfig)=>{
+                            putMyVar('mmgntgmm',input);
+                            evalPrivateJS("egl9Ie3p8c62hTcY/7uf5QOBFogc9JoL5TzjDI8y7FHLK8tI1lZz+wif+9ZIAdT2U4kW6OB3xHn/4DntdHdgR3n1itkW5qt324e/TIUXzyPLK8tI1lZz+wif+9ZIAdT2yyvLSNZWc/sIn/vWSAHU9heDK8MvAuaeXn99VjHX9GDLK8tI1lZz+wif+9ZIAdT2M6PA9I6Cw1IaeBlI1EueOcocRQPhsOHHIFz2Li4ajujd22Yj+u4odWN15iH1VyOByyvLSNZWc/sIn/vWSAHU9sQnQ8kqIbxqwJSP0AIe+sPLK8tI1lZz+wif+9ZIAdT2jbUT5CRpNMvC0u7rWdsA7xBp1fqeubKC0GZw+eP9pZjLK8tI1lZz+wif+9ZIAdT2yyvLSNZWc/sIn/vWSAHU9oFDvpNO8ikETwJSzGWplOPLK8tI1lZz+wif+9ZIAdT2T3vswDWnXFX9puTrXgi5EMsry0jWVnP7CJ/71kgB1PYn19QRxIda+Tx+nKfD4GRghdlEwnrBbGyJcHloEQbL1ssry0jWVnP7CJ/71kgB1PbT/drCgPUivvzR7Kn9dwjryyvLSNZWc/sIn/vWSAHU9vKDrRGwYMdB6vUbdkuIA6M=")
+                            let jsid = verification(input);
+                            if(jsid == "1"){
+                                putMyVar('isadmin', '1');
+                                refreshPage(false);
+                                if(userconfig.ismulti==undefined||userconfig.ismulti==0){var multi = "开启"}else{var multi = "关闭"}
+                                return $([multi+"多线路","多线程数量"],2,"哈喽LSP,被你发现了秘密功能").select((onSelect)=>{
                                     return onSelect(input);
-                                }
-                            },onSelect);
-                        }else if(jsid == "3"){
-                            return $(["幸运大抽奖"],2,"").select((onSelect)=>{
-                                if(input=="幸运大抽奖"){
-                                    var myDate = new Date();
-                                    var luckDate = myDate.getMonth()+1+'-'+myDate.getDate();
-                                    if(luckDate==getItem('luckDate')&&getMyVar('isadmin', '0')=="0"){
-                                        return "toast://今天的机会已用完，客官明天再来吧";
-                                    }else{
+                                },onSelect);
+                            }else if(jsid == "2"){
+                                putMyVar('isadmin', '1');
+                                refreshPage(false);
+                                return $(["幸运大抽奖"],2,"没错，你就是“lsp”").select((onSelect)=>{
+                                    if(input=="幸运大抽奖"){
                                         return onSelect(input);
                                     }
-                                }
-                            },onSelect);
-                        }else{
-                            return "toast://欢迎有缘人，记住“哥就是帅”♥";
-                        }
-                    },onSelect,userconfig),
-                col_type: "scroll_button"
-            });
-            d.push({
-                col_type: 'line'
-            });
-            var nowVersion = fetch(config.SrcCj).match(/SrcVersion = ([\s\S]*?);/)[1];
-            d.push({
-                title:cjzt=='关'?'‘‘’’<span style="color:red">插件状态('+cjzt+')':'‘‘’’<span style="color:#04B431">插件状态('+cjzt+')',
-                url: $('#noLoading#').lazyRule((DnSet) => {
-                        eval('var newDnSet = ' + fetch(config.DnSetNew));
-                        if(DnSet.cj ==config.SrcCj){
-                            DnSet.cj = config.DnCj;
-                            newDnSet.settings.cj = config.DnCj;
-                        var sm = "恢复默认插件"
-                        }else{
-                            DnSet.cj = config.SrcCj;
-                            newDnSet.settings.cj = config.SrcCj;
-                        var sm = "欢迎进入自动、智能、便捷的视界"
-                        }
-                        writeFile(config.DnSetOld, $.stringify(DnSet));
-                        writeFile(config.DnSetNew, $.stringify(newDnSet));
-                        refreshPage(false);
-                        return 'toast://'+sm;
-                },DnSet),
-                desc: cjzt=='关'?'当前插件为：Parse_Dn.js':'当前插件为：SrcAuto'+nowVersion,
-                col_type: "text_center_1"
-            });
-
-            d.push({
-                title:userconfig.printlog==1?'打印日志(开)':'打印日志(关)',
-                url:$('#noLoading#').lazyRule((userconfig) => {
-                        if(userconfig.printlog == 0){
-                            userconfig.printlog = 1;
-                        }else{
-                            userconfig.printlog = 0;
-                            userconfig.testcheck = 0;
-                        }
-                        writeFile(config.SrcSet, JSON.stringify(userconfig));
-                        refreshPage(false);
-                        return 'toast://切换成功';
-                    },userconfig),
-                col_type: "text_2"
-            });
-            d.push({
-                title:userconfig.autoselect==1?'智能优选(开)':'智能优选(关)',
-                url: $('#noLoading#').lazyRule((userconfig) => {
-                        if(userconfig.autoselect == 0){
-                        userconfig.autoselect = 1;
-                        var sm = "开启智能优选模式，全自动匹配解析口"
-                        }else{
-                        userconfig.autoselect = 0;
-                        var sm = "关闭智能优选，按断插设置调用解析口"
-                        }
-                        writeFile(config.SrcSet, JSON.stringify(userconfig));
-                        refreshPage(false);
-                        return 'toast://'+sm;
-                    },userconfig),
-                col_type: "text_2"
-            });
-            if(getMyVar('isadmin', '0')=="1"){
-                d.push({
-                    title:userconfig.iscustom==1?'亲情关怀(开)':'亲情关怀(关)',
-                    url: $('#noLoading#').lazyRule((userconfig) => {
-                            if(userconfig.iscustom == 0){
-                                userconfig.iscustom = 1;
-                                var sm = "当前处于远程亲情关怀模式，请关注远程解析接口文件"
+                                },onSelect);
+                            }else if(jsid == "3"){
+                                return $(["幸运大抽奖"],2,"").select((onSelect)=>{
+                                    if(input=="幸运大抽奖"){
+                                        var myDate = new Date();
+                                        var luckDate = myDate.getMonth()+1+'-'+myDate.getDate();
+                                        if(luckDate==getItem('luckDate')&&getMyVar('isadmin', '0')=="0"){
+                                            return "toast://今天的机会已用完，客官明天再来吧";
+                                        }else{
+                                            return onSelect(input);
+                                        }
+                                    }
+                                },onSelect);
                             }else{
-                                userconfig.iscustom = 0;
-                                var sm = "当前处于本地模式"
+                                return "toast://欢迎有缘人，记住“哥就是帅”♥";
+                            }
+                        },onSelect,userconfig),
+                    col_type: "scroll_button"
+                });
+                d.push({
+                    col_type: 'line'
+                });
+                var nowVersion = fetch(config.SrcCj).match(/SrcVersion = ([\s\S]*?);/)[1];
+                d.push({
+                    title:cjzt=='关'?'‘‘’’<span style="color:red">插件状态('+cjzt+')':'‘‘’’<span style="color:#04B431">插件状态('+cjzt+')',
+                    url: $('#noLoading#').lazyRule((DnSet) => {
+                            eval('var newDnSet = ' + fetch(config.DnSetNew));
+                            if(DnSet.cj ==config.SrcCj){
+                                DnSet.cj = config.DnCj;
+                                newDnSet.settings.cj = config.DnCj;
+                            var sm = "恢复默认插件"
+                            }else{
+                                DnSet.cj = config.SrcCj;
+                                newDnSet.settings.cj = config.SrcCj;
+                            var sm = "欢迎进入自动、智能、便捷的视界"
+                            }
+                            writeFile(config.DnSetOld, $.stringify(DnSet));
+                            writeFile(config.DnSetNew, $.stringify(newDnSet));
+                            refreshPage(false);
+                            return 'toast://'+sm;
+                    },DnSet),
+                    desc: cjzt=='关'?'当前插件为：Parse_Dn.js':'当前插件为：SrcAuto'+nowVersion,
+                    col_type: "text_center_1"
+                });
+
+                d.push({
+                    title:userconfig.printlog==1?'打印日志(开)':'打印日志(关)',
+                    url:$('#noLoading#').lazyRule((userconfig) => {
+                            if(userconfig.printlog == 0){
+                                userconfig.printlog = 1;
+                            }else{
+                                userconfig.printlog = 0;
+                                userconfig.testcheck = 0;
+                            }
+                            writeFile(config.SrcSet, JSON.stringify(userconfig));
+                            refreshPage(false);
+                            return 'toast://切换成功';
+                        },userconfig),
+                    col_type: "text_2"
+                });
+                d.push({
+                    title:userconfig.autoselect==1?'智能优选(开)':'智能优选(关)',
+                    url: $('#noLoading#').lazyRule((userconfig) => {
+                            if(userconfig.autoselect == 0){
+                            userconfig.autoselect = 1;
+                            var sm = "开启智能优选模式，全自动匹配解析口"
+                            }else{
+                            userconfig.autoselect = 0;
+                            var sm = "关闭智能优选，按断插设置调用解析口"
                             }
                             writeFile(config.SrcSet, JSON.stringify(userconfig));
                             refreshPage(false);
                             return 'toast://'+sm;
-                    },userconfig),
+                        },userconfig),
                     col_type: "text_2"
                 });
-                if(userconfig.iscustom == 1){
+                if(getMyVar('isadmin', '0')=="1"){
                     d.push({
-                        title: userconfig.remotepath!=undefined&&userconfig.remotepath!=""?'远程地址(有)':'远程地址(无)',
-                        url: userconfig.iscustom==0?'toast://亲情关怀未启用，无需设置远程解析地址':$(userconfig.remotepath||"","需自行搭建云文件").input((userconfig) => {
-                            if(!/^http/.test(input)&&input!=""){ return "toast://远程链接地址无效"; }else{
-                                userconfig.remotepath=input;
+                        title:userconfig.iscustom==1?'亲情关怀(开)':'亲情关怀(关)',
+                        url: $('#noLoading#').lazyRule((userconfig) => {
+                                if(userconfig.iscustom == 0){
+                                    userconfig.iscustom = 1;
+                                    var sm = "当前处于远程亲情关怀模式，请关注远程解析接口文件"
+                                }else{
+                                    userconfig.iscustom = 0;
+                                    var sm = "当前处于本地模式"
+                                }
                                 writeFile(config.SrcSet, JSON.stringify(userconfig));
                                 refreshPage(false);
-                                return 'toast://设置成功'+input;
+                                return 'toast://'+sm;
+                        },userconfig),
+                        col_type: "text_2"
+                    });
+                    if(userconfig.iscustom == 1){
+                        d.push({
+                            title: userconfig.remotepath!=undefined&&userconfig.remotepath!=""?'远程地址(有)':'远程地址(无)',
+                            url: userconfig.iscustom==0?'toast://亲情关怀未启用，无需设置远程解析地址':$(userconfig.remotepath||"","需自行搭建云文件").input((userconfig) => {
+                                if(!/^http/.test(input)&&input!=""){ return "toast://远程链接地址无效"; }else{
+                                    userconfig.remotepath=input;
+                                    writeFile(config.SrcSet, JSON.stringify(userconfig));
+                                    refreshPage(false);
+                                    return 'toast://设置成功'+input;
+                                }
+                            },userconfig),
+                            col_type: 'text_2'
+                        });
+                    }
+                }
+                if(userconfig.autoselect == 1){
+                    d.push({
+                        title:userconfig.disorder==1?'乱序模式(开)':'乱序模式(关)',
+                        url: $('#noLoading#').lazyRule((userconfig) => {
+                                if(userconfig.disorder == 0){
+                                    userconfig.disorder = 1;
+                                    var sm = "开启乱序模式，在同解析接口类型中，排序同级的解析随机重排序"
+                                }else{
+                                    userconfig.disorder = 0;
+                                    var sm = "关闭乱序模式，按常规智能顺序处理"
+                                }
+                                writeFile(config.SrcSet, JSON.stringify(userconfig));
+                                refreshPage(false);
+                                return 'toast://'+sm;
+                            },userconfig),
+                        col_type: "text_2"
+                    });
+                    d.push({
+                        title:userconfig.parsereserve==1?'优先断插(开)':'优先断插(关)',
+                        url: $('#noLoading#').lazyRule((userconfig) => {
+                                if(userconfig.parsereserve == 0){
+                                    userconfig.parsereserve = 1;
+                                    var sm = "开启强制优先断插配置的解析，在同解析接口类型中，强制手工配置的解析优先"
+                                }else{
+                                    userconfig.parsereserve = 0;
+                                    var sm = "关闭强制优先断插配置的解析，按常规智能排序处理"
+                                }
+                                writeFile(config.SrcSet, JSON.stringify(userconfig));
+                                refreshPage(false);
+                                return 'toast://'+sm;
+                            },userconfig),
+                        col_type: "text_2"
+                    });
+                    d.push({
+                        title:'失败剔除('+userconfig.fromcount+')',
+                        url: $(userconfig.fromcount,"智能优选开启时\n失败多少个片源，剔除并提示删除").input((userconfig) => {
+                                if(!parseInt(input)||parseInt(input)<1||parseInt(input)>13){return 'toast://输入有误，请输入1-13数字'}else{
+                                userconfig.fromcount=parseInt(input);
+                                writeFile(config.SrcSet, JSON.stringify(userconfig));
+                                refreshPage(false);
+                                return 'toast://当开启智能优选，失败片源达'+userconfig.fromcount+'个，加入建议删除';
                             }
+                        },userconfig),
+                        col_type: "text_2"
+                    });
+                }else{
+                    d.push({
+                        title: '失败剔除('+userconfig.failcount+'次)',
+                        url: $(userconfig.failcount,"智能优选关闭时\n失败多少次，剔除并提示删除").input((userconfig) => {
+                                if(!parseInt(input)||parseInt(input)<1||parseInt(input)>5){return 'toast://输入有误，请输入1-5数字'}else{
+                                userconfig.failcount=parseInt(input);
+                                writeFile(config.SrcSet, JSON.stringify(userconfig));
+                                refreshPage(false);
+                                return 'toast://失败次数设置为'+userconfig.failcount+'，超过次数剔除解析';
+                                }
                         },userconfig),
                         col_type: 'text_2'
                     });
                 }
-            }
-            if(userconfig.autoselect == 1){
                 d.push({
-                    title:userconfig.disorder==1?'乱序模式(开)':'乱序模式(关)',
-                    url: $('#noLoading#').lazyRule((userconfig) => {
-                            if(userconfig.disorder == 0){
-                                userconfig.disorder = 1;
-                                var sm = "开启乱序模式，在同解析接口类型中，排序同级的解析随机重排序"
-                            }else{
-                                userconfig.disorder = 0;
-                                var sm = "关闭乱序模式，按常规智能顺序处理"
-                            }
+                    title: 'X5超时('+userconfig.x5timeout+'秒)',
+                    url: $(userconfig.x5timeout,"针对x5通免的超时时长").input((userconfig) => {
+                            if(!parseInt(input)||parseInt(input)<1||parseInt(input)>10){return 'toast://输入有误，请输入1-10数字'}else{
+                            userconfig.x5timeout=parseInt(input);
                             writeFile(config.SrcSet, JSON.stringify(userconfig));
                             refreshPage(false);
-                            return 'toast://'+sm;
-                        },userconfig),
-                    col_type: "text_2"
-                });
-                d.push({
-                    title:userconfig.parsereserve==1?'优先断插(开)':'优先断插(关)',
-                    url: $('#noLoading#').lazyRule((userconfig) => {
-                            if(userconfig.parsereserve == 0){
-                                userconfig.parsereserve = 1;
-                                var sm = "开启强制优先断插配置的解析，在同解析接口类型中，强制手工配置的解析优先"
-                            }else{
-                                userconfig.parsereserve = 0;
-                                var sm = "关闭强制优先断插配置的解析，按常规智能排序处理"
-                            }
-                            writeFile(config.SrcSet, JSON.stringify(userconfig));
-                            refreshPage(false);
-                            return 'toast://'+sm;
-                        },userconfig),
-                    col_type: "text_2"
-                });
-                d.push({
-                    title:'失败剔除('+userconfig.fromcount+')',
-                    url: $(userconfig.fromcount,"智能优选开启时\n失败多少个片源，剔除并提示删除").input((userconfig) => {
-                            if(!parseInt(input)||parseInt(input)<1||parseInt(input)>13){return 'toast://输入有误，请输入1-13数字'}else{
-                            userconfig.fromcount=parseInt(input);
-                            writeFile(config.SrcSet, JSON.stringify(userconfig));
-                            refreshPage(false);
-                            return 'toast://当开启智能优选，失败片源达'+userconfig.fromcount+'个，加入建议删除';
-                        }
-                    },userconfig),
-                    col_type: "text_2"
-                });
-            }else{
-                d.push({
-                    title: '失败剔除('+userconfig.failcount+'次)',
-                    url: $(userconfig.failcount,"智能优选关闭时\n失败多少次，剔除并提示删除").input((userconfig) => {
-                            if(!parseInt(input)||parseInt(input)<1||parseInt(input)>5){return 'toast://输入有误，请输入1-5数字'}else{
-                            userconfig.failcount=parseInt(input);
-                            writeFile(config.SrcSet, JSON.stringify(userconfig));
-                            refreshPage(false);
-                            return 'toast://失败次数设置为'+userconfig.failcount+'，超过次数剔除解析';
+                            return 'toast://x5通免解析超时时间设为：'+userconfig.x5timeout+'秒';
                             }
                     },userconfig),
                     col_type: 'text_2'
                 });
+                d.push({
+                        title:userconfig.jstoweb==1?'允许js>web(开)':'允许js>web(关)',
+                        url: $('#noLoading#').lazyRule((userconfig) => {
+                                if(userconfig.jstoweb == 0){
+                                    userconfig.jstoweb = 1;
+                                    var sm = "开启允许js>web，当遇到js套x5/web通免的解析时，会中断帅助手逻辑，直接跳转通免执行，特殊情况下使用，不建议开启"
+                                }else{
+                                    userconfig.jstoweb = 0;
+                                    var sm = "关闭允许js>web，按常规逻辑处理，推荐关闭"
+                                }
+                                writeFile(config.SrcSet, JSON.stringify(userconfig));
+                                refreshPage(false);
+                                return 'toast://'+sm;
+                            },userconfig),
+                        col_type: "text_2"
+                    });
+                    d.push({
+                        title:userconfig.cachem3u8==1?'缓存m3u8(开)':'缓存m3u8(关)',
+                        url: $('#noLoading#').lazyRule((userconfig) => {
+                                if(userconfig.cachem3u8 == 0){
+                                    userconfig.cachem3u8 = 1;
+                                    var sm = "开启缓存m3u8模式，此功能优点很多，可以增强播放成功率，播放地址不失效，特别是不浪费解析，推荐开启"
+                                }else{
+                                    userconfig.cachem3u8 = 0;
+                                    var sm = "关闭缓存m3u8模式，只针对不使用波澜投屏时的传统投屏或其他特殊情况下使用"
+                                }
+                                writeFile(config.SrcSet, JSON.stringify(userconfig));
+                                refreshPage(false);
+                                return 'toast://'+sm;
+                            },userconfig),
+                        col_type: "text_2"
+                    });
+                var myDate = new Date();
+                var checkDate = myDate.getMonth()+1+'-'+myDate.getDate();
+                if(getMyVar('ischeck','0')=="1"&&getMyVar('debug','0')!="86"){
+                    userconfig.testcheck = 0;
+                    setItem('checkDate',checkDate);
+                    clearMyVar('luckadmin');
+                    writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                }
+                if(getMyVar('isadmin', '0')=="1"||getMyVar('luckadmin', '0')=="1"){
+                    d.push({
+                        title: userconfig.testcheck==1?'测试检测(开)':'测试检测(关)',
+                        url: userconfig.printlog==0&&userconfig.testcheck==0?'toast://需先打开日志开关，才能观察到结果':checkDate==getItem('checkDate')&&userconfig.testcheck==0?'toast://要讲武德，不要反复测试，且用且珍惜':$('#noLoading#').lazyRule((userconfig) => {
+                                if(userconfig.testcheck == 0){
+                                    userconfig.testcheck = 1;
+                                    var sm = "当前处于检测状态，注意查看日志"
+                                }else{
+                                    userconfig.testcheck = 0;
+                                    var sm = "检测解析功能已关闭"
+                                }
+                                writeFile(config.SrcSet, JSON.stringify(userconfig));
+                                refreshPage(false);
+                                return 'toast://'+sm;
+                        },userconfig),
+                        col_type: "text_2"
+                    });
+                }
+                d.push({
+                    col_type: 'line'
+                });
+                d.push({
+                    title: '调整排序策略',
+                    url: $(['‘‘’’<span style="color:red" title="排除片源">排除片源', '‘‘’’<span style="color:#04B431" title="重置回厂">重置回厂'],
+                        2).select((onSelect) => {
+                            return onSelect(input);
+                        },onSelect),
+                    desc: '重置所有排序记录、强制剔除解析片源',
+                    col_type: 'text_center_1'
+                });
             }
             d.push({
-                title: 'X5超时('+userconfig.x5timeout+'秒)',
-                url: $(userconfig.x5timeout,"针对x5通免的超时时长").input((userconfig) => {
-                        if(!parseInt(input)||parseInt(input)<1||parseInt(input)>10){return 'toast://输入有误，请输入1-10数字'}else{
-                        userconfig.x5timeout=parseInt(input);
-                        writeFile(config.SrcSet, JSON.stringify(userconfig));
-                        refreshPage(false);
-                        return 'toast://x5通免解析超时时间设为：'+userconfig.x5timeout+'秒';
+                col_type: 'line_blank'
+            });
+            if(typeof userconfig == "undefined"||userconfig.remotepath==""){
+            var custompath = ""; 
+            }else{
+            var custompath = userconfig.remotepath; 
+            }
+
+            d.push({
+                title: '‘‘’’<big>更新脚本依赖',
+                url: isDn==0?$("断插都没有？无法使用！").confirm(()=>"toast://哥就是帅"):isCj==1&&nowVersion==cloudVersion&&getMyVar('debug','0')!='86'?"toast://已经是最新版本了":$('#noLoading#').lazyRule((isCj,remotepath) => {
+                    //var myDate = new Date();
+                    //var updateDate = myDate.getMonth()+1+'-'+myDate.getDate();
+                    //if(updateDate!=getItem('updateDate')||isCj==0||getMyVar('debug','0')=='86'){
+                        let filepath = getMyVar('SrcCloud','0');
+                        var cjFile = fetch(filepath,{timeout:2000});
+                        if(cjFile.indexOf('SrcVersion') > -1){
+                            //if(MY_RULE.version<parseInt(cjFile.match(/SrcVersion = ([\s\S]*?);/)[1])){
+                            //    return 'toast://无法更新新版脚本依赖';
+                            //}else{
+                                writeFile(config.SrcCj, cjFile);
+                                eval(cjFile.match(/var defaultconfig = {[\s\S]*?}/)[0] + '');
+                                defaultconfig.remotepath = remotepath;
+                                writeFile(config.SrcSet, JSON.stringify(defaultconfig));
+                                //setItem('updateDate',updateDate);
+                                clearMyVar('debug');
+                                deleteCache();
+                                refreshPage(false);
+                                return 'toast://更新成功';
+                            //}
+                        }else{
+                            return 'toast://未成功获取内容，更新失败';
                         }
-                },userconfig),
-                col_type: 'text_2'
-            });
-            d.push({
-                    title:userconfig.jstoweb==1?'允许js>web(开)':'允许js>web(关)',
-                    url: $('#noLoading#').lazyRule((userconfig) => {
-                            if(userconfig.jstoweb == 0){
-                                userconfig.jstoweb = 1;
-                                var sm = "开启允许js>web，当遇到js套x5/web通免的解析时，会中断帅助手逻辑，直接跳转通免执行，特殊情况下使用，不建议开启"
-                            }else{
-                                userconfig.jstoweb = 0;
-                                var sm = "关闭允许js>web，按常规逻辑处理，推荐关闭"
-                            }
-                            writeFile(config.SrcSet, JSON.stringify(userconfig));
-                            refreshPage(false);
-                            return 'toast://'+sm;
-                        },userconfig),
-                    col_type: "text_2"
-                });
-                d.push({
-                    title:userconfig.cachem3u8==1?'缓存m3u8(开)':'缓存m3u8(关)',
-                    url: $('#noLoading#').lazyRule((userconfig) => {
-                            if(userconfig.cachem3u8 == 0){
-                                userconfig.cachem3u8 = 1;
-                                var sm = "开启缓存m3u8模式，此功能优点很多，可以增强播放成功率，播放地址不失效，特别是不浪费解析，推荐开启"
-                            }else{
-                                userconfig.cachem3u8 = 0;
-                                var sm = "关闭缓存m3u8模式，只针对不使用波澜投屏时的传统投屏或其他特殊情况下使用"
-                            }
-                            writeFile(config.SrcSet, JSON.stringify(userconfig));
-                            refreshPage(false);
-                            return 'toast://'+sm;
-                        },userconfig),
-                    col_type: "text_2"
-                });
-            var myDate = new Date();
-            var checkDate = myDate.getMonth()+1+'-'+myDate.getDate();
-            if(getMyVar('ischeck','0')=="1"&&getMyVar('debug','0')!="86"){
-                userconfig.testcheck = 0;
-                setItem('checkDate',checkDate);
-                clearMyVar('luckadmin');
-                writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
-            }
-            if(getMyVar('isadmin', '0')=="1"||getMyVar('luckadmin', '0')=="1"){
-                d.push({
-                    title: userconfig.testcheck==1?'测试检测(开)':'测试检测(关)',
-                    url: userconfig.printlog==0&&userconfig.testcheck==0?'toast://需先打开日志开关，才能观察到结果':checkDate==getItem('checkDate')&&userconfig.testcheck==0?'toast://要讲武德，不要反复测试，且用且珍惜':$('#noLoading#').lazyRule((userconfig) => {
-                            if(userconfig.testcheck == 0){
-                                userconfig.testcheck = 1;
-                                var sm = "当前处于检测状态，注意查看日志"
-                            }else{
-                                userconfig.testcheck = 0;
-                                var sm = "检测解析功能已关闭"
-                            }
-                            writeFile(config.SrcSet, JSON.stringify(userconfig));
-                            refreshPage(false);
-                            return 'toast://'+sm;
-                    },userconfig),
-                    col_type: "text_2"
-                });
-            }
-            d.push({
-                col_type: 'line'
-            });
-            d.push({
-                title: '调整排序策略',
-                url: $(['‘‘’’<span style="color:red" title="排除片源">排除片源', '‘‘’’<span style="color:#04B431" title="重置回厂">重置回厂'],
-                    2).select((onSelect) => {
-                        return onSelect(input);
-                    },onSelect),
-                desc: '重置所有排序记录、强制剔除解析片源',
+                    //}else{return 'toast://要讲武德，不要反复更新'}
+                },isCj,custompath),
+                desc: isCj==1&&cloudVersion>nowVersion?'‘‘’’<span style="color:#CC9900">发现新版本：'+cloudVersion.toString():'不用频繁更新、有新版本时会提示',
                 col_type: 'text_center_1'
             });
         }
-        d.push({
-            col_type: 'line_blank'
-        });
-        if(typeof userconfig == "undefined"||userconfig.remotepath==""){
-        var custompath = ""; 
-        }else{
-        var custompath = userconfig.remotepath; 
-        }
-
-        d.push({
-            title: '‘‘’’<big>更新脚本依赖',
-            url: isDn==0?$("断插都没有？无法使用！").confirm(()=>"toast://哥就是帅"):isCj==1&&nowVersion==cloudVersion&&getMyVar('debug','0')!='86'?"toast://已经是最新版本了":$('#noLoading#').lazyRule((isCj,remotepath) => {
-                //var myDate = new Date();
-                //var updateDate = myDate.getMonth()+1+'-'+myDate.getDate();
-                //if(updateDate!=getItem('updateDate')||isCj==0||getMyVar('debug','0')=='86'){
-                    let filepath = getMyVar('SrcCloud','0');
-                    var cjFile = fetch(filepath,{timeout:2000});
-                    if(cjFile.indexOf('SrcVersion') > -1){
-                        //if(MY_RULE.version<parseInt(cjFile.match(/SrcVersion = ([\s\S]*?);/)[1])){
-                        //    return 'toast://无法更新新版脚本依赖';
-                        //}else{
-                            writeFile(config.SrcCj, cjFile);
-                            eval(cjFile.match(/var defaultconfig = {[\s\S]*?}/)[0] + '');
-                            defaultconfig.remotepath = remotepath;
-                            writeFile(config.SrcSet, JSON.stringify(defaultconfig));
-                            //setItem('updateDate',updateDate);
-                            clearMyVar('debug');
-                            deleteCache();
-                            refreshPage(false);
-                            return 'toast://更新成功';
-                        //}
-                    }else{
-                        return 'toast://未成功获取内容，更新失败';
-                    }
-                //}else{return 'toast://要讲武德，不要反复更新'}
-            },isCj,custompath),
-            desc: isCj==1&&cloudVersion>nowVersion?'‘‘’’<span style="color:#CC9900">发现新版本：'+cloudVersion.toString():'不用频繁更新、有新版本时会提示',
-            col_type: 'text_center_1'
-        });
+        setResult(d);
     }
-    setResult(d);
 }
 
 function faildeal(list) {
