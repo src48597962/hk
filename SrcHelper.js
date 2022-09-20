@@ -4,7 +4,7 @@ function homepage(helper) {
         confirm({
             title:'发现新版本，是否更新？', 
             content:'版本号：11', 
-            confirm:`parsePaste(https://pasteme.tyrantg.com/xxxxxx/1kh9o33jk5jo3kjp@OcVpSw)`, 
+            confirm:`return parsePaste(https://pasteme.tyrantg.com/xxxxxx/1kh9o33jk5jo3kjp@OcVpSw)`, 
             cancel:''
         })
     }else{
