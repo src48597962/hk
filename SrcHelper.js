@@ -1,8 +1,6 @@
 function homepage(helper) {
     var cloudVersion = 7.01;//插件版本号，判断是否需要更新
-    if(config.SrcSet=='hiker://files/cache/SrcSet.js'){
-        
-    }
+    
 
     if (!fileExist('hiker://files/rules/Src/Auto/config.json')&&fileExist('hiker://files/cache/SrcSet.js')) {
         try{
