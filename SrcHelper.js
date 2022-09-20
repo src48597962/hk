@@ -4,7 +4,7 @@ function homepage(helper) {
         confirm({
             title:'帅助手发现新版本，是否更新？', 
             content:'', 
-            confirm:``, 
+            confirm:'', 
             cancel:''
         })
     }
