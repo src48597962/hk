@@ -1,11 +1,17 @@
 function homepage(helper) {
     var cloudVersion = 7.01;//插件版本号，判断是否需要更新
     if(config.SrcSet=='hiker://files/cache/SrcSet.js'){
-        confirm({
+        /*confirm({
             title:'发现新版本，是否更新？', 
             content:'版本号：11', 
             confirm:`#noLoading#@lazyRule=.js:((Url)=>{return parsePaste(Url);})("https://pasteme.tyrantg.com/xxxxxx/1kh9o33jk5jo3kjp@OcVpSw")`, 
             cancel:''
+        })*/
+        confirm({
+            title:'更新提示', 
+            content:'发现新版本，是否立即更新？', 
+            confirm:()=>{return parsePaste("https://pasteme.tyrantg.com/xxxxxx/1kh9o33jk5jo3kjp@OcVpSw");}, 
+            cancel:()=>{return 'toast://哥帅不';}
         })
     }else{
         if (!fileExist('hiker://files/rules/Src/Auto/config.json')&&fileExist('hiker://files/cache/SrcSet.js')) {
