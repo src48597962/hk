@@ -1,11 +1,14 @@
 function homepage(helper) {
     var cloudVersion = 7.01;//插件版本号，判断是否需要更新
+    if(config.SrcSet=='hiker://files/cache/SrcSet.js'){
+        return 'toast://请更新帅助手';
+    }
 
     if (!fileExist('hiker://files/rules/Src/Auto/config.json')&&fileExist('hiker://files/cache/SrcSet.js')) {
         try{
             eval(fetch('hiker://files/cache/SrcSet.js').replace('userconfig','oldconfig'));
             writeFile('hiker://files/rules/Src/Auto/config.json', JSON.stringify(oldconfig));
-        }catch(e){}
+        }catch(e){} 
     }
     if (!fileExist('hiker://files/rules/Src/Auto/SrcSort.json')&&fileExist('hiker://files/cache/SrcSort.json')) {
         try{
@@ -37,7 +40,7 @@ function homepage(helper) {
     }
     if(Dnzt==1){
         //判断是否有插件，是否首次使用
-        eval(fetch(config.SrcSet));//加载用户参数
+        eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
         if(fetch(config.SrcCj)==""||typeof userconfig == "undefined"){
             var isCj = 0;
             var nowVersion = 0;
@@ -132,7 +135,7 @@ function homepage(helper) {
             d.push({
                 title:'建议处理',
                 url: $('#noLoading#').lazyRule((faildeal) => {
-                        eval(fetch(config.SrcSet));//加载用户参数
+                        eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
                         if(userconfig.dellist==undefined||userconfig.dellist.length==0){
                             return 'toast://运行良好，没有建议处理的解析';
                         }else{
@@ -222,7 +225,7 @@ function homepage(helper) {
                             userconfig.printlog = 0;
                             userconfig.testcheck = 0;
                         }
-                        writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                        writeFile(config.SrcSet, JSON.stringify(userconfig));
                         refreshPage(false);
                         return 'toast://切换成功';
                     },userconfig),
@@ -238,7 +241,7 @@ function homepage(helper) {
                         userconfig.autoselect = 0;
                         var sm = "关闭智能优选，按断插设置调用解析口"
                         }
-                        writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                        writeFile(config.SrcSet, JSON.stringify(userconfig));
                         refreshPage(false);
                         return 'toast://'+sm;
                     },userconfig),
@@ -255,7 +258,7 @@ function homepage(helper) {
                                 userconfig.iscustom = 0;
                                 var sm = "当前处于本地模式"
                             }
-                            writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                            writeFile(config.SrcSet, JSON.stringify(userconfig));
                             refreshPage(false);
                             return 'toast://'+sm;
                     },userconfig),
@@ -267,7 +270,7 @@ function homepage(helper) {
                         url: userconfig.iscustom==0?'toast://亲情关怀未启用，无需设置远程解析地址':$(userconfig.remotepath||"","需自行搭建云文件").input((userconfig) => {
                             if(!/^http/.test(input)&&input!=""){ return "toast://远程链接地址无效"; }else{
                                 userconfig.remotepath=input;
-                                writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                                writeFile(config.SrcSet, JSON.stringify(userconfig));
                                 refreshPage(false);
                                 return 'toast://设置成功'+input;
                             }
@@ -287,7 +290,7 @@ function homepage(helper) {
                                 userconfig.disorder = 0;
                                 var sm = "关闭乱序模式，按常规智能顺序处理"
                             }
-                            writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                            writeFile(config.SrcSet, JSON.stringify(userconfig));
                             refreshPage(false);
                             return 'toast://'+sm;
                         },userconfig),
@@ -303,7 +306,7 @@ function homepage(helper) {
                                 userconfig.parsereserve = 0;
                                 var sm = "关闭强制优先断插配置的解析，按常规智能排序处理"
                             }
-                            writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                            writeFile(config.SrcSet, JSON.stringify(userconfig));
                             refreshPage(false);
                             return 'toast://'+sm;
                         },userconfig),
@@ -314,7 +317,7 @@ function homepage(helper) {
                     url: $(userconfig.fromcount,"智能优选开启时\n失败多少个片源，剔除并提示删除").input((userconfig) => {
                             if(!parseInt(input)||parseInt(input)<1||parseInt(input)>13){return 'toast://输入有误，请输入1-13数字'}else{
                             userconfig.fromcount=parseInt(input);
-                            writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                            writeFile(config.SrcSet, JSON.stringify(userconfig));
                             refreshPage(false);
                             return 'toast://当开启智能优选，失败片源达'+userconfig.fromcount+'个，加入建议删除';
                         }
@@ -327,7 +330,7 @@ function homepage(helper) {
                     url: $(userconfig.failcount,"智能优选关闭时\n失败多少次，剔除并提示删除").input((userconfig) => {
                             if(!parseInt(input)||parseInt(input)<1||parseInt(input)>5){return 'toast://输入有误，请输入1-5数字'}else{
                             userconfig.failcount=parseInt(input);
-                            writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                            writeFile(config.SrcSet, JSON.stringify(userconfig));
                             refreshPage(false);
                             return 'toast://失败次数设置为'+userconfig.failcount+'，超过次数剔除解析';
                             }
@@ -340,7 +343,7 @@ function homepage(helper) {
                 url: $(userconfig.x5timeout,"针对x5通免的超时时长").input((userconfig) => {
                         if(!parseInt(input)||parseInt(input)<1||parseInt(input)>10){return 'toast://输入有误，请输入1-10数字'}else{
                         userconfig.x5timeout=parseInt(input);
-                        writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                        writeFile(config.SrcSet, JSON.stringify(userconfig));
                         refreshPage(false);
                         return 'toast://x5通免解析超时时间设为：'+userconfig.x5timeout+'秒';
                         }
@@ -357,7 +360,7 @@ function homepage(helper) {
                                 userconfig.jstoweb = 0;
                                 var sm = "关闭允许js>web，按常规逻辑处理，推荐关闭"
                             }
-                            writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                            writeFile(config.SrcSet, JSON.stringify(userconfig));
                             refreshPage(false);
                             return 'toast://'+sm;
                         },userconfig),
@@ -373,7 +376,7 @@ function homepage(helper) {
                                 userconfig.cachem3u8 = 0;
                                 var sm = "关闭缓存m3u8模式，只针对不使用波澜投屏时的传统投屏或其他特殊情况下使用"
                             }
-                            writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                            writeFile(config.SrcSet, JSON.stringify(userconfig));
                             refreshPage(false);
                             return 'toast://'+sm;
                         },userconfig),
@@ -398,7 +401,7 @@ function homepage(helper) {
                                 userconfig.testcheck = 0;
                                 var sm = "检测解析功能已关闭"
                             }
-                            writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                            writeFile(config.SrcSet, JSON.stringify(userconfig));
                             refreshPage(false);
                             return 'toast://'+sm;
                     },userconfig),
@@ -442,7 +445,7 @@ function homepage(helper) {
                             writeFile(config.SrcCj, cjFile);
                             eval(cjFile.match(/var defaultconfig = {[\s\S]*?}/)[0] + '');
                             defaultconfig.remotepath = remotepath;
-                            writeFile(config.SrcSet, "var userconfig = "+JSON.stringify(defaultconfig));
+                            writeFile(config.SrcSet, JSON.stringify(defaultconfig));
                             //setItem('updateDate',updateDate);
                             clearMyVar('debug');
                             deleteCache();
@@ -465,9 +468,9 @@ function faildeal(list) {
     addListener("onClose", $.toString(() => {
         clearMyVar("动作");
         clearMyVar("片源");
-        eval(fetch(config.SrcSet));//加载用户参数
+        eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
         userconfig['dellist'] = config.faillist;
-        writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+        writeFile(config.SrcSet, JSON.stringify(userconfig));
         initConfig({faillist:'0'});
     }));
     setPageTitle("失败解析处理");
@@ -604,9 +607,9 @@ function faildeal(list) {
                             initConfig({faillist:faillist});
                             log(config.faillist);
                             //从建议处理中删除
-                            eval(fetch(config.SrcSet));//加载用户参数
+                            eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
                             removeByValue(userconfig.dellist,parseStr);
-                            writeFile(config.SrcSet, 'var userconfig = ' + $.stringify(userconfig));
+                            writeFile(config.SrcSet, $.stringify(userconfig));
                             
                             var DnSetNew = config.DnSetNew;
                             eval('var json =' + fetch(DnSetNew));
@@ -728,24 +731,24 @@ function onSelect(input) {
             },stopfrom) 
             break;
         case "开启多线路":
-            eval(fetch(config.SrcSet));//加载用户参数
+            eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
             userconfig['ismulti'] = 1;
-            writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+            writeFile(config.SrcSet, JSON.stringify(userconfig));
             return 'toast://已开启JS免嗅、明码直链多线程解析';
             break;
         case "关闭多线路":
-            eval(fetch(config.SrcSet));//加载用户参数
+            eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
             userconfig['ismulti'] = 0;
-            writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+            writeFile(config.SrcSet, JSON.stringify(userconfig));
             return 'toast://已关闭JS免嗅、明码直链多线程解析';
             break;
         case "多线程数量":
-            eval(fetch(config.SrcSet));//加载用户参数
+            eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
             return $(userconfig.multiline,"JS免嗅、JSON直链\n多线程解析运行数量(1-5)").input((userconfig) => {
                     if(!parseInt(input)||parseInt(input)<1||parseInt(input)>5){return 'toast://输入有误，请输入1-5数字'}else{
                     userconfig.multiline=parseInt(input);
                     userconfig['adminuser'] = 1;
-                    writeFile(config.SrcSet, 'var userconfig = ' + JSON.stringify(userconfig));
+                    writeFile(config.SrcSet, JSON.stringify(userconfig));
                     refreshPage(false);
                     return 'toast://多线程数量设为：'+userconfig.multiline;
                 }
