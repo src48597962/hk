@@ -1,11 +1,10 @@
 function homepage(helper) {
     var cloudVersion = 7.01;//插件版本号，判断是否需要更新
     if(config.SrcSet=='hiker://files/cache/SrcSet.js'){
-        log('qqq');
         confirm({
             title:'帅助手发现新版本，是否更新？', 
-            content:'', 
-            confirm:'', 
+            content:'1111', 
+            confirm:`log('11')`, 
             cancel:''
         })
     }
