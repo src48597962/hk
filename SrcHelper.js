@@ -45,7 +45,10 @@ function homepage(helper) {
         }
         if(Dnzt==1){
             //判断是否有插件，是否首次使用
-            eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
+            let cfgfile = fetch(config.SrcSet);
+            if(cfgfile){
+                eval("var userconfig=" + fetch(config.SrcSet));//加载用户参数
+            }
             if(fetch(config.SrcCj)==""||typeof userconfig == "undefined"){
                 var isCj = 0;
                 var nowVersion = 0;
@@ -656,7 +659,7 @@ function faildeal(list) {
                                 json.title.splice(json.title.indexOf(parseStr),1,input);
                                 writeFile(DnSetNew, $.stringify(json));
 
-                                var filepath = "hiker://files/cache/SrcSort.json";
+                                var filepath = "hiker://files/rules/Src/Auto/SrcSort.json";
                                 var sortfile = fetch(filepath);
                                 if(sortfile != ""){
                                     eval("var sortlist=" + sortfile+ ";");
@@ -692,7 +695,7 @@ function faildeal(list) {
                             var DnSetNew = config.DnSetNew;
                             eval('var json =' + fetch(DnSetNew));
                             if(json.title.indexOf(parseStr)>-1){
-                                var filepath = "hiker://files/cache/SrcSort.json";
+                                var filepath = "hiker://files/rules/Src/Auto/SrcSort.json";
                                 var sortfile = fetch(filepath);
                                 if(sortfile != ""){
                                     eval("var sortlist=" + sortfile+ ";");
@@ -725,7 +728,7 @@ function onSelect(input) {
     switch (type) {
         case "重置回厂":
             return $("清空智能排序记录，是否确认？").confirm(()=>{
-                writeFile('hiker://files/cache/srcsort.json', '');
+                writeFile('hiker://files/rules/Src/Auto/SrcSort.json', '');
                 return 'toast://已重置排序历史';
             });
             break;
@@ -970,7 +973,7 @@ function onSelect(input) {
             var issort = 0;
             var Globalexclude = 0;
             var allowlist = sitelist;
-            var filepath = "hiker://files/cache/SrcSort.json";
+            var filepath = "hiker://files/rules/Src/Auto/SrcSort.json";
             var sortfile = fetch(filepath);
             if(sortfile != ""){
                 eval("var sortlist=" + sortfile+ ";");
