@@ -653,7 +653,6 @@ var aytmParse = function (vipUrl,parseStr) {
                     SAconfig['sccesslist'] = {sccesslist:[],issort:0};
                     writeFile(cfgfile, JSON.stringify(SAconfig));
                 }*/
-                log(faillist);
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
@@ -676,6 +675,7 @@ var aytmParse = function (vipUrl,parseStr) {
 
 //x5嗅探通用免嗅函数、自动多层嵌套
 function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl) {
+    log(faillist);
     return 'webRule://' + x5jxlist[0] + vipUrl + '@' + (typeof $$$ == 'undefined' ? $ : $$$).toString((x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl, x5Player) => {
         fba.log(faillist);
         if(typeof(request)=='undefined'||!request){
