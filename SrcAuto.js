@@ -649,7 +649,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 }
                 if(testcheck==1){
                     delete SAconfig['x5scslist'];
-                    SAconfig['x5test'] = {sccesslist:[],issort:0};
+                    SAconfig['sccesslist'] = {sccesslist:[],issort:0};
                     writeFile(cfgfile, JSON.stringify(SAconfig));
                 }
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
@@ -745,7 +745,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 for(var j=0;j<sortlist.length;j++){
                     if(sortlist[j].name == x5nmlist[0]){ 
                         sortlist[j].sort = sortlist[j].sort+1;
-                        //fba.putVar('SrcAuto$issort','1');
+                        parmset.issort = 1;
                         failsum = sortlist[j].sort;
                         if(sortlist[j].stopfrom.indexOf(parmset.from)==-1){
                             if((parmset.autoselect==1&&failsum>2)||(failsum>=parmset.failcount)){
@@ -768,7 +768,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         for (var i in urls) {
             if (!exclude.test(urls[i]) && contain.test(urls[i]) && urls[i].indexOf('=http')==-1) {
                 if(parmset.printlog==1){fy_bridge_app.log(x5nmlist[0]+">√嗅探解析成功>"+urls[i])};
-                //if(fba.getVar('SrcAuto$issort','')=="1"){fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist))};
+                if(parmset.issort==1){fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist))};
                 if(parmset.testcheck==1){
                     //eval(request("hiker://files/cache/SrcSet.js"));
                     //userconfig.x5scslist.push(x5nmlist[0]);
