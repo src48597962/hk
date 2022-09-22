@@ -711,11 +711,11 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 //for(var i = 0; i < userconfig.x5scslist.length; i++) {
                 //    faillist.splice(faillist.indexOf(userconfig.x5scslist[i]),1);
                 //}
-                let sccesslist = fba.getMyVar('SrcAuto$sccesslist','')?fba.getMyVar('SrcAuto$sccesslist','').split(','):[];
+                let sccesslist = fba.getVar('SrcAuto$sccesslist','')?fba.getVar('SrcAuto$sccesslist','').split(','):[];
                 for(var i = 0; i < sccesslist.length; i++) {
                     faillist.splice(faillist.indexOf(sccesslist[i]),1);
                 }
-                fba.log('成功的:'+fba.getMyVar('SrcAuto$sccesslist',''));
+                fba.log('成功的:'+fba.getVar('SrcAuto$sccesslist',''));
                 if(parmset.printlog==1){
                     if(parmset.testcheck==1){
                         fba.log("√检测结束");
@@ -777,7 +777,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     //fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
                     //fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
                     
-                    let sccesslist = fba.getMyVar('SrcAuto$sccesslist','')?fba.getMyVar('SrcAuto$sccesslist','').split(','):[];
+                    let sccesslist = fba.getVar('SrcAuto$sccesslist','')?fba.MyVar('SrcAuto$sccesslist','').split(','):[];
                     sccesslist.push(x5nmlist[0]);
                     fba.putVar('SrcAuto$sccesslist',sccesslist.join(','));
                     window.c = 100;
