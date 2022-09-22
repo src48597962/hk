@@ -679,7 +679,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         }
         if (window.c == null) {
             window.c = 0;
-            if(parmset.testcheck==1){fba.showLoading('嗅探解析列表，检测中')}else{fba.showLoading('√嗅探解析中，请稍候')};
+            if(parmset.testcheck==1){fba.showLoading('√解析列表，检测中')}else{fba.showLoading('√视频解析中，请稍候')};
         };
         window.c++;
         if (window.c * 250 >= parmset.timeout*1000) {
@@ -753,7 +753,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 return x5Player(x5jxlist.slice(1), x5nmlist.slice(1), vipUrl, sortlist, parmset, faillist, formatUrl);
             }
         }
-        //fba.log(fy_bridge_app.getUrls());
+        fba.log(fy_bridge_app.getUrls());
         var urls = _getUrls();
         var exclude = /\/404\.m3u8|\/xiajia\.mp4|\/余额不足\.m3u8|\.css|\.js|\.gif|\.png|\.jpeg|api\.m3u88\.com/;//设置排除地址
         var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/;//设置符合条件的正确地址
