@@ -708,7 +708,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     }
                 }
                 fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
-
+                fba.log('js>'+faillist)
                 fba.hideLoading();
                 /*
                 if(userconfig.x5test.sccesslist){
