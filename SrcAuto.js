@@ -688,7 +688,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         window.c++;
 
         if (window.c * 250 >= parmset.timeout*1000) {
-            faillist.push(x5nmlist[0]);
+            if(window.c<1000){faillist.push(x5nmlist[0]);}
             if (x5jxlist.length == 1) { 
                 //最后一个X5解析失败了，排序+1
                 let failsum = 0;
@@ -735,7 +735,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                             return "toast://检测结束";
                         }
                     }else{
-                        fba.initConfig({faillist:faillist});
+                        //fba.initConfig({faillist:faillist});
                         refreshPage(false);
                         return "toast://〖"+parmset.parseStr+"〗解析失败";
                     }
@@ -778,7 +778,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     //fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
                     //fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
                 
-                    window.c = 100;
+                    window.c = 1000;
                 }else{
                     return $$$("#noLoading#").lazyRule((url,formatUrl)=>{
                         return formatUrl(url); 
