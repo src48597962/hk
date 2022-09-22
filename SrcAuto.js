@@ -640,12 +640,12 @@ var aytmParse = function (vipUrl,parseStr) {
                 if(printlog==1){if(testcheck==1){log("√JS免嗅和URL明码检测结束，转嗅探检测接口数："+x5jxlist.length)}else{log("√JS免嗅和URL明码失败，转嗅探解析接口数："+x5jxlist.length)}};
                 if(printlog==1){log("√嗅探调用解析口："+x5nmlist[0])};
                 //if(testcheck==1){showLoading('嗅探解析列表，检测中')}else{showLoading('√嗅探解析中，请稍候')};
-                let parmset = {"issort":0,"printlog":printlog,"timeout":SAconfig.x5timeout,"autoselect":SAconfig.autoselect,"failcount":SAconfig.failcount,"from":from,"testcheck":testcheck,"parseStr":parseStr,"helper":getMyVar('helper','0'),"Sversion":parseInt(getMyVar('Sversion','0'))};
+                let parmset = {"issort":0,"printlog":printlog,"timeout":SAconfig.x5timeout,"autoselect":SAconfig.autoselect,"failcount":SAconfig.failcount,"from":from,"testcheck":testcheck,"parseStr":parseStr,"helper":getMyVar('helper','0'),"sccesslist":[]};
                 for(var i = 0; i < x5nmlist.length; i++) {
                     faillist.push(x5nmlist[i]);
                 }
-                SAconfig['x5scslist'] = [];
-                writeFile(cfgfile, JSON.stringify(SAconfig));
+                //SAconfig['x5scslist'] = [];
+                //writeFile(cfgfile, JSON.stringify(SAconfig));
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
@@ -673,11 +673,12 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
+        /*
         var cfgfile = "hiker://files/rules/Src/Auto/config.json";
         var Autocfg=fetch(cfgfile);
         if(Autocfg){
             eval("var userconfig=" + Autocfg+ ";");//加载用户参数
-        }
+        }*/
         if (window.c == null) {
             window.c = 0;
             if(parmset.testcheck==1){fba.showLoading('√解析列表，检测中')}else{fba.showLoading('√视频解析中，请稍候')};
@@ -705,8 +706,11 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 fba.hideLoading();
 
                 //eval(request("hiker://files/cache/SrcSet.js"));
-                for(var i = 0; i < userconfig.x5scslist.length; i++) {
-                    faillist.splice(faillist.indexOf(userconfig.x5scslist[i]),1);
+                //for(var i = 0; i < userconfig.x5scslist.length; i++) {
+                //    faillist.splice(faillist.indexOf(userconfig.x5scslist[i]),1);
+                //}
+                for(var i = 0; i < parmset.sccesslist.length; i++) {
+                    faillist.splice(faillist.indexOf(parmset.sccesslist[i]),1);
                 }
                 if(parmset.printlog==1){
                     if(parmset.testcheck==1){
@@ -767,9 +771,10 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 if(parmset.issort==1){fy_bridge_app.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist))};
                 if(parmset.testcheck==1){
                     //eval(request("hiker://files/cache/SrcSet.js"));
-                    userconfig.x5scslist.push(x5nmlist[0]);
+                    //userconfig.x5scslist.push(x5nmlist[0]);
                     //fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
-                    fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
+                    //fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
+                    parmset.sccesslist.push(x5nmlist[0]);
                     window.c = 100;
                 }else{
                     return $$$("#noLoading#").lazyRule((url,formatUrl)=>{
