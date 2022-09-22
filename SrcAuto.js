@@ -734,11 +734,11 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                             return "toast://检测结束";
                         }
                     }else{
-                        return $$$("#noLoading#").lazyRule((faillist,parseStr)=>{
+                        return $$$("#noLoading#").lazyRule((faillist)=>{
                             initConfig({faillist:faillist});
                             refreshPage(false);
-                            return "toast://〖"+parseStr+"〗解析失败";
-                        },faillist,parmset.parseStr);
+                            return "toast://〖"+faillist+"〗解析失败";
+                        },faillist);
                     }
                 }else{
                     fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
