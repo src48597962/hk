@@ -643,12 +643,13 @@ var aytmParse = function (vipUrl,parseStr) {
                 if(printlog==1){if(testcheck==1){log("√JS免嗅和URL明码检测结束，转嗅探检测接口数："+x5jxlist.length)}else{log("√JS免嗅和URL明码失败，转嗅探解析接口数："+x5jxlist.length)}};
                 if(printlog==1){log("√嗅探调用解析口："+x5nmlist[0])};
                 //if(testcheck==1){showLoading('嗅探解析列表，检测中')}else{showLoading('√嗅探解析中，请稍候')};
-                let parmset = {"issort":0,"printlog":printlog,"timeout":SAconfig.x5timeout,"autoselect":SAconfig.autoselect,"failcount":SAconfig.failcount,"from":from,"testcheck":testcheck,"parseStr":parseStr,"helper":getMyVar('helper','0'),"sccesslist":[]};
+                let parmset = {"issort":0,"printlog":printlog,"timeout":SAconfig.x5timeout,"autoselect":SAconfig.autoselect,"failcount":SAconfig.failcount,"from":from,"testcheck":testcheck,"parseStr":parseStr,"helper":getMyVar('helper','0')};
                 for(var i = 0; i < x5nmlist.length; i++) {
                     faillist.push(x5nmlist[i]);
                 }
                 //SAconfig['x5scslist'] = [];
                 //writeFile(cfgfile, JSON.stringify(SAconfig));
+                clearVar('SrcAuto$sccesslist');
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
@@ -710,12 +711,11 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 //for(var i = 0; i < userconfig.x5scslist.length; i++) {
                 //    faillist.splice(faillist.indexOf(userconfig.x5scslist[i]),1);
                 //}
-                
-                for(var i = 0; i < parmset.sccesslist.length; i++) {
-                    faillist.splice(faillist.indexOf(parmset.sccesslist[i]),1);
+                let sccesslist = fba.getMyVar('SrcAuto$sccesslist','')?fba.getMyVar('SrcAuto$sccesslist','').split(','):[];
+                for(var i = 0; i < sccesslist.length; i++) {
+                    faillist.splice(faillist.indexOf(sccesslist[i]),1);
                 }
-                fba.log('成功的:'+parmset.sccesslist);
-                fba.log('失败的:'+faillist);
+                fba.log('成功的:'+fba.getMyVar('SrcAuto$sccesslist',''));
                 if(parmset.printlog==1){
                     if(parmset.testcheck==1){
                         fba.log("√检测结束");
@@ -776,7 +776,10 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     //userconfig.x5scslist.push(x5nmlist[0]);
                     //fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
                     //fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
-                    parmset.sccesslist.push(x5nmlist[0]);
+                    
+                    let sccesslist = fba.getMyVar('SrcAuto$sccesslist','')?fba.getMyVar('SrcAuto$sccesslist','').split(','):[];
+                    sccesslist.push(x5nmlist[0]);
+                    fba.putVar('SrcAuto$sccesslist',sccesslist.join(','));
                     window.c = 100;
                 }else{
                     return $$$("#noLoading#").lazyRule((url,formatUrl)=>{
