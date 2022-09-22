@@ -732,12 +732,25 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                                 return "toast://〖"+faillist+"〗解析失败";
                             },faillist);
                         }else{
-                            return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => {
-                                return $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
-                                    requireCache(helper, 48);
-                                    faildeal(faillist);
+                            return $$$("#noLoading#").lazyRule((faillist,helper)=>{
+                                log('1>'+faillist);
+                                return $("检测结束,是否处理失败的解析？").confirm((faillist,helper) => {
+                                    log('2>'+faillist);
+                                    return $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
+                                        log('3>'+faillist);
+                                        requireCache(helper, 48);
+                                        faildeal(faillist);
+                                    }, faillist, helper);
                                 }, faillist, helper);
-                            }, faillist, parmset.helper);
+                            },faillist, parmset.helper);
+                            /*
+                                return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => {
+                                    return $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
+                                        requireCache(helper, 48);
+                                        faildeal(faillist);
+                                    }, faillist, helper);
+                                }, faillist, parmset.helper);
+                            */
                         }
                         
                     }else{
