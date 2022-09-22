@@ -326,7 +326,6 @@ var aytmParse = function (vipUrl,parseStr) {
     }
     if(dellist.length > 0){
         SAconfig['dellist'] = dellist;
-        //writeFile("hiker://files/cache/SrcSet.js", 'var userconfig = ' + JSON.stringify(SAconfig))
         writeFile(cfgfile, JSON.stringify(SAconfig));
         if(printlog == 1){log("√建议删除解析口:"+dellist);}
     }
@@ -593,7 +592,7 @@ var aytmParse = function (vipUrl,parseStr) {
         }//多线程结果处理
     }//循环结束
 
-    if(issort==1&&!parseStr){writeFile(sortfile, JSON.stringify(sortlist))};
+    if(issort==1&&!parseStr&&testcheck!=1){writeFile(sortfile, JSON.stringify(sortlist))};
 
     //上面js免嗅、json、明码解析、剔除打不开网站做完了
     try {
@@ -644,15 +643,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 if(printlog==1){log("√嗅探调用解析口："+x5nmlist[0])};
                 //if(testcheck==1){showLoading('嗅探解析列表，检测中')}else{showLoading('√嗅探解析中，请稍候')};
                 let parmset = {"issort":0,"printlog":printlog,"timeout":SAconfig.x5timeout,"autoselect":SAconfig.autoselect,"failcount":SAconfig.failcount,"from":from,"testcheck":testcheck,"parseStr":parseStr,"helper":getMyVar('helper','0')};
-                /*
-                for(var i = 0; i < x5nmlist.length; i++) {
-                    faillist.push(x5nmlist[i]);
-                }
-                if(testcheck==1){
-                    delete SAconfig['x5scslist'];
-                    SAconfig['sccesslist'] = {sccesslist:[],issort:0};
-                    writeFile(cfgfile, JSON.stringify(SAconfig));
-                }*/
+
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
@@ -790,11 +781,6 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
             if (!exclude.test(urls[i]) && contain.test(urls[i]) && urls[i].indexOf('=http')==-1) {
                 if(parmset.printlog==1){fy_bridge_app.log(x5nmlist[0]+">√嗅探解析成功>"+urls[i])};
                 if(parmset.testcheck==1){
-                    //eval(request("hiker://files/cache/SrcSet.js"));
-                    //userconfig.x5scslist.push(x5nmlist[0]);
-                    //fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
-                    //fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
-                
                     window.c = 1000;
                 }else{
                     if(parmset.issort==1){fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist))};
