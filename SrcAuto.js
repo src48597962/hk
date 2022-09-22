@@ -689,8 +689,6 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
             if(parmset.testcheck==1){fba.showLoading('√解析列表，检测中')}else{fba.showLoading('√视频解析中，请稍候')};
         };
         window.c++;
-        fba.putVar('test','a');
-        fba.log(fba.getVar('test',''));
 
         if (window.c * 250 >= parmset.timeout*1000) {
             if (x5jxlist.length == 1) { 
@@ -766,6 +764,8 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 return x5Player(x5jxlist.slice(1), x5nmlist.slice(1), vipUrl, sortlist, parmset, faillist, formatUrl);
             }
         }
+        fy_bridge_app.putVar('test','a');
+        fy_bridge_app.log(fy_bridge_app.getVar('test',''));
         //fba.log(fy_bridge_app.getUrls());
         var urls = _getUrls();
         var exclude = /\/404\.m3u8|\/xiajia\.mp4|\/余额不足\.m3u8|\.css|\.js|\.gif|\.png|\.jpeg|api\.m3u88\.com/;//设置排除地址
