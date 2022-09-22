@@ -710,10 +710,11 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 //for(var i = 0; i < userconfig.x5scslist.length; i++) {
                 //    faillist.splice(faillist.indexOf(userconfig.x5scslist[i]),1);
                 //}
+                
                 for(var i = 0; i < parmset.sccesslist.length; i++) {
                     faillist.splice(faillist.indexOf(parmset.sccesslist[i]),1);
                 }
-                fba.lgo('成功的:'+parmset.sccesslist);
+                fba.log('成功的:'+parmset.sccesslist);
                 fba.log('失败的:'+faillist);
                 if(parmset.printlog==1){
                     if(parmset.testcheck==1){
