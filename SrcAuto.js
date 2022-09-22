@@ -613,7 +613,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 if(printlog==1){
                     if(testcheck==1){
                         log('√检测结束');
-                        log('√解析失败的>'+faillist);
+                        if(faillist.length>0){log('√解析失败的>'+faillist);}
                         refreshPage(false);
                     }else{
                         log('√JS免嗅和URL明码解析失败、无嗅探解析，需重新配置插件')
@@ -718,7 +718,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 if(parmset.printlog==1){
                     if(parmset.testcheck==1){
                         fba.log("√检测结束");
-                        fba.log('√解析失败的>'+faillist);
+                        if(faillist.length>0){fba.log('√解析失败的>'+faillist);}
                     }else{
                         fba.log("√超过"+window.c * 250+"毫秒还未成功,已失败"+failsum+"次，全部嗅探解析口都失败了");
                     }
@@ -734,9 +734,11 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                             return "toast://检测结束";
                         }
                     }else{
-                        //fba.initConfig({faillist:faillist});
-                        //refreshPage(false);
-                        return "toast://〖"+parmset.parseStr+"〗解析失败";
+                        return $$$("#noLoading#").lazyRule((faillist,parseStr)=>{
+                            initConfig({faillist:faillist});
+                            refreshPage(false);
+                            return "toast://〖"+parseStr+"〗解析失败";
+                        },faillist,parmset.parseStr);
                     }
                 }else{
                     fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
