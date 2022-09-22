@@ -706,7 +706,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     }
                 }
                 fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
-                fba.log('js>'+faillist)
+
                 fba.hideLoading();
                 /*
                 if(userconfig.x5test.sccesslist){
@@ -725,6 +725,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     }
                 };
                 if(parmset.testcheck==1){
+                    fba.log(parmset.parseStr);
                     if (parmset.parseStr == undefined) {
                         if(faillist.length>0){
                             return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
