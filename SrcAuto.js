@@ -735,7 +735,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                             return "toast://检测结束";
                         }
                     }else{
-                        initConfig({faillist:faillist});
+                        fba.initConfig({faillist:faillist});
                         refreshPage(false);
                         return "toast://〖"+parmset.parseStr+"〗解析失败";
                     }
