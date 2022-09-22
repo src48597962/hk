@@ -647,10 +647,10 @@ var aytmParse = function (vipUrl,parseStr) {
                 for(var i = 0; i < x5nmlist.length; i++) {
                     faillist.push(x5nmlist[i]);
                 }
-                //SAconfig['x5scslist'] = [];
+
+                delete SAconfig['x5scslist'];
+                //SAconfig['x5test'] = {sccesslist:[],issortL:0};
                 //writeFile(cfgfile, JSON.stringify(SAconfig));
-                clearVar('SrcAuto$sccesslist');
-                clearVar('SrcAuto$issort');
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
@@ -674,15 +674,19 @@ var aytmParse = function (vipUrl,parseStr) {
 //x5嗅探通用免嗅函数、自动多层嵌套
 function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl) {
     return 'x5Rule://' + x5jxlist[0] + vipUrl + '@' + (typeof $$$ == 'undefined' ? $ : $$$).toString((x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl, x5Player) => {
+        fba.putVar('test','a');
+        fba.log(fba.getVar('test',''));
+        initConfig({test:'b'});
+        fba.log(config.test);
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
-        /*
+
         var cfgfile = "hiker://files/rules/Src/Auto/config.json";
-        var Autocfg=fetch(cfgfile);
+        var Autocfg = fetch(cfgfile);
         if(Autocfg){
-            eval("var userconfig=" + Autocfg+ ";");//加载用户参数
-        }*/
+            eval("var userconfig=" + Autocfg);//加载用户参数
+        }
         if (window.c == null) {
             window.c = 0;
             if(parmset.testcheck==1){fba.showLoading('√解析列表，检测中')}else{fba.showLoading('√视频解析中，请稍候')};
@@ -692,13 +696,8 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
             if (x5jxlist.length == 1) { 
                 //最后一个X5解析失败了，排序+1
                 fba.hideLoading();
-                //eval(request("hiker://files/cache/SrcSet.js"));
-                //for(var i = 0; i < userconfig.x5scslist.length; i++) {
-                //    faillist.splice(faillist.indexOf(userconfig.x5scslist[i]),1);
-                //}
-                
-                if(fba.getVar('SrcAuto$sccesslist')){
-                    var sccesslist = fba.getVar('SrcAuto$sccesslist','').split(',');
+                if(userconfig.x5test.sccesslist){
+                    var sccesslist = userconfig.x5test.sccesslist||[];
                     for(var i = 0; i < sccesslist.length; i++) {
                         faillist.splice(faillist.indexOf(sccesslist[i]),1);
                     }
@@ -780,7 +779,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     //fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
                     //fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
                     
-                    if(fba.getVar('SrcAuto$sccesslist')){
+                    if(fba.getVar('SrcAuto$sccesslist','')){
                         fba.putVar('SrcAuto$sccesslist',fba.getVar('SrcAuto$sccesslist')+","+x5nmlist[0]);
                     }else{
                         fba.putVar('SrcAuto$sccesslist',x5nmlist[0]);
