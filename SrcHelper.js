@@ -500,6 +500,7 @@ function faildeal(list) {
         initConfig({faillist:uniq(list)});
         refreshPage(false);
     }
+    
     var d = [];
     d.push({
         title: '选择处理动作▼',
