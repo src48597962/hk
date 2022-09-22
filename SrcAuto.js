@@ -710,7 +710,8 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 for(var i = 0; i < parmset.sccesslist.length; i++) {
                     faillist.splice(faillist.indexOf(parmset.sccesslist[i]),1);
                 }
-                fba.log(faillist);
+                fba.lgo('成功的:'+parmset.sccesslist);
+                fba.log('失败的:'+faillist);
                 if(parmset.printlog==1){
                     if(parmset.testcheck==1){
                         fba.log("√检测结束");
@@ -754,7 +755,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                         break;
                     }
                 }
-                if(parmset.printlog==1){ if(parmset.testcheck==1){fba.log("√检测下一个嗅探解析："+x5nmlist.slice(1)[0]);}else{fba.log("√超过"+window.c * 250+"毫秒还未成功,此解析已失败"+failsum+"次，跳转下一个嗅探解析："+x5nmlist.slice(1)[0])}};
+                if(parmset.printlog==1){ if(parmset.testcheck==1){fba.log("√检测下一个嗅探解析："+x5nmlist.slice(1)[0]);}else{fba.log(x5nmlist[0]+">√超过"+window.c * 250+"毫秒还未成功,已失败"+failsum+"次，下一个解析："+x5nmlist.slice(1)[0])}};
                 return x5Player(x5jxlist.slice(1), x5nmlist.slice(1), vipUrl, sortlist, parmset, faillist, formatUrl);
             }
         }
@@ -764,7 +765,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/;//设置符合条件的正确地址
         for (var i in urls) {
             if (!exclude.test(urls[i]) && contain.test(urls[i]) && urls[i].indexOf('=http')==-1) {
-                if(parmset.printlog==1){fy_bridge_app.log("√嗅探解析成功>"+urls[i])};
+                if(parmset.printlog==1){fy_bridge_app.log(x5nmlist[0]+">√嗅探解析成功>"+urls[i])};
                 if(parmset.issort==1){fy_bridge_app.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist))};
                 if(parmset.testcheck==1){
                     //eval(request("hiker://files/cache/SrcSet.js"));
