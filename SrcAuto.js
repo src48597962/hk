@@ -724,21 +724,22 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     }
                 };
                 if(parmset.testcheck==1){
-                    if (!parmset.parseStr) {
-                        if(faillist.length>0){
-                            return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
-                                    requireCache(helper, 48);
-                                    faildeal(faillist);
-                                }, faillist, helper), faillist, parmset.helper)
+                    if(faillist.length>0){
+                        if (parmset.parseStr) {
+                            return $$$("#noLoading#").lazyRule((faillist)=>{
+                                initConfig({faillist:faillist});
+                                refreshPage(false);
+                                return "toast://〖"+faillist+"〗解析失败";
+                            },faillist);
                         }else{
-                            return "toast://检测结束";
+                            return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
+                                requireCache(helper, 48);
+                                faildeal(faillist);
+                            }, faillist, helper), faillist, parmset.helper);
                         }
+                        
                     }else{
-                        return $$$("#noLoading#").lazyRule((faillist)=>{
-                            initConfig({faillist:faillist});
-                            refreshPage(false);
-                            return "toast://〖"+faillist+"〗解析失败";
-                        },faillist);
+                        return "toast://检测结束";
                     }
                 }else{
                     fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
