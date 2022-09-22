@@ -669,6 +669,7 @@ var aytmParse = function (vipUrl,parseStr) {
 //x5嗅探通用免嗅函数、自动多层嵌套
 function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl) {
     return 'x5Rule://' + x5jxlist[0] + vipUrl + '@' + (typeof $$$ == 'undefined' ? $ : $$$).toString((x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl, x5Player) => {
+        fba.log('a');
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
