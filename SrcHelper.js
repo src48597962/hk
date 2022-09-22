@@ -92,7 +92,9 @@ function homepage(helper) {
                     },userconfig,helper),
                     extra: {
                         titleVisible: true,
-                        ua:PC_UA,
+                        //ua:PC_UA,
+                        jsLoadingInject: true,
+                        blockRules: ['.m4a','.mp3','.mp4','.flv','.avi','.3gp','.mpeg','.wmv','.mov','.rmvb','.gif','.jpeg','.png','hm.baidu.com','/ads/*.js','.css'],
                         defaultValue: getMyVar('playTestUrl', '') || "",
                         onChange: 'putMyVar("playTestUrl",input)'
                     }
