@@ -647,10 +647,11 @@ var aytmParse = function (vipUrl,parseStr) {
                 for(var i = 0; i < x5nmlist.length; i++) {
                     faillist.push(x5nmlist[i]);
                 }
-
-                //delete SAconfig['x5scslist'];
-                //SAconfig['x5test'] = {sccesslist:[],issortL:0};
-                //writeFile(cfgfile, JSON.stringify(SAconfig));
+                if(testcheck==1){
+                    delete SAconfig['x5scslist'];
+                    SAconfig['x5test'] = {sccesslist:[],issort:0};
+                    writeFile(cfgfile, JSON.stringify(SAconfig));
+                }
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
@@ -677,13 +678,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
-/*
-        var cfgfile = "hiker://files/rules/Src/Auto/config.json";
-        var Autocfg = fetch(cfgfile);
-        if(Autocfg){
-            eval("var userconfig=" + Autocfg);//加载用户参数
-        }
-        */
+
         if (window.c == null) {
             window.c = 0;
             if(parmset.testcheck==1){fba.showLoading('√解析列表，检测中')}else{fba.showLoading('√视频解析中，请稍候')};
@@ -749,7 +744,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 for(var j=0;j<sortlist.length;j++){
                     if(sortlist[j].name == x5nmlist[0]){ 
                         sortlist[j].sort = sortlist[j].sort+1;
-                        fba.putVar('SrcAuto$issort','1');
+                        //fba.putVar('SrcAuto$issort','1');
                         failsum = sortlist[j].sort;
                         if(sortlist[j].stopfrom.indexOf(parmset.from)==-1){
                             if((parmset.autoselect==1&&failsum>2)||(failsum>=parmset.failcount)){
@@ -773,18 +768,13 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         for (var i in urls) {
             if (!exclude.test(urls[i]) && contain.test(urls[i]) && urls[i].indexOf('=http')==-1) {
                 if(parmset.printlog==1){fy_bridge_app.log(x5nmlist[0]+">√嗅探解析成功>"+urls[i])};
-                if(fba.getVar('SrcAuto$issort','')=="1"){fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist))};
+                //if(fba.getVar('SrcAuto$issort','')=="1"){fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist))};
                 if(parmset.testcheck==1){
                     //eval(request("hiker://files/cache/SrcSet.js"));
                     //userconfig.x5scslist.push(x5nmlist[0]);
                     //fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
                     //fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
-                    
-                    if(fba.getVar('SrcAuto$sccesslist','')){
-                        fba.putVar('SrcAuto$sccesslist',fba.getVar('SrcAuto$sccesslist')+","+x5nmlist[0]);
-                    }else{
-                        fba.putVar('SrcAuto$sccesslist',x5nmlist[0]);
-                    }
+                
                     window.c = 100;
                 }else{
                     return $$$("#noLoading#").lazyRule((url,formatUrl)=>{
