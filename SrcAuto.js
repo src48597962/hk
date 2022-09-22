@@ -536,7 +536,7 @@ var aytmParse = function (vipUrl,parseStr) {
                                 }else{
                                     let MulUrl = SrcParseS.formatMulUrl(parseurl.replace(/;{.*}/g,""), urls.length);
                                     urls.push(MulUrl.url);
-                                    names.push('线路'+urls.length);
+                                    names.push(parsename);
                                     headers.push(MulUrl.header);
                                 }
                             }else{
