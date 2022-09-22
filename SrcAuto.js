@@ -620,7 +620,7 @@ var aytmParse = function (vipUrl,parseStr) {
                     }
                 };
                 if(testcheck==1){
-                    if (parseStr == undefined) {
+                    if (!parseStr) {
                         if(faillist.length>0){
                             return $("检测结束,是否处理失败的解析？").confirm((faillist,helper)=>{
                                 return $("#noHistory##noRecordHistory#hiker://empty").rule((faillist,helper)=>{
@@ -725,8 +725,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     }
                 };
                 if(parmset.testcheck==1){
-                    fba.log(parmset.parseStr);
-                    if (parmset.parseStr == undefined) {
+                    if (!parmset.parseStr) {
                         if(faillist.length>0){
                             return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
                                     requireCache(helper, 48);
