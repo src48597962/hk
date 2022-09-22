@@ -677,11 +677,13 @@ var aytmParse = function (vipUrl,parseStr) {
 //x5嗅探通用免嗅函数、自动多层嵌套
 function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl) {
     return 'webRule://' + x5jxlist[0] + vipUrl + '@' + (typeof $$$ == 'undefined' ? $ : $$$).toString((x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl, x5Player) => {
+        fba.log(faillist);
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
 
         if (window.c == null) {
+            fba.hideLoading();
             window.c = 0;
             if(parmset.testcheck==1){fba.showLoading('√解析列表，检测中')}else{fba.showLoading('√视频解析中，请稍候')};
         };
