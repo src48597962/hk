@@ -653,6 +653,7 @@ var aytmParse = function (vipUrl,parseStr) {
                     SAconfig['sccesslist'] = {sccesslist:[],issort:0};
                     writeFile(cfgfile, JSON.stringify(SAconfig));
                 }*/
+                log(faillist);
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
