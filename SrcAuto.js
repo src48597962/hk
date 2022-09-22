@@ -733,7 +733,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                             },faillist);
                         }else{
                             return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => {
-                                return $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
+                                return $$$("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
                                     log(faillist);
                                     requireCache(helper, 48);
                                     faildeal(faillist);
