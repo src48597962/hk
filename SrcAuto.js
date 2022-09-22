@@ -644,6 +644,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 if(printlog==1){log("√嗅探调用解析口："+x5nmlist[0])};
                 //if(testcheck==1){showLoading('嗅探解析列表，检测中')}else{showLoading('√嗅探解析中，请稍候')};
                 let parmset = {"issort":0,"printlog":printlog,"timeout":SAconfig.x5timeout,"autoselect":SAconfig.autoselect,"failcount":SAconfig.failcount,"from":from,"testcheck":testcheck,"parseStr":parseStr,"helper":getMyVar('helper','0')};
+                /*
                 for(var i = 0; i < x5nmlist.length; i++) {
                     faillist.push(x5nmlist[i]);
                 }
@@ -651,7 +652,7 @@ var aytmParse = function (vipUrl,parseStr) {
                     delete SAconfig['x5scslist'];
                     SAconfig['sccesslist'] = {sccesslist:[],issort:0};
                     writeFile(cfgfile, JSON.stringify(SAconfig));
-                }
+                }*/
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
@@ -686,6 +687,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         window.c++;
 
         if (window.c * 250 >= parmset.timeout*1000) {
+            faillist.push(x5nmlist[0]);
             if (x5jxlist.length == 1) { 
                 //最后一个X5解析失败了，排序+1
                 let failsum = 0;
