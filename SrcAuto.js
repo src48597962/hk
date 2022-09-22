@@ -691,8 +691,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         window.c++;
         fba.putVar('test','a');
         fba.log(fba.getVar('test',''));
-        initConfig({test:'b'});
-        fba.log(config.test);
+
         if (window.c * 250 >= parmset.timeout*1000) {
             if (x5jxlist.length == 1) { 
                 //最后一个X5解析失败了，排序+1
