@@ -1,7 +1,7 @@
 //============自动挡处理逻辑、仅用于个人学习使用============
 //========感谢@断念大佬========
 
-var SrcVersion = 7.06;
+var SrcVersion = 7.07;
 
 //载入断插主控js
 eval(fetch('hiker://files/cache/Parse_Dn.js'));
@@ -674,10 +674,6 @@ var aytmParse = function (vipUrl,parseStr) {
 //x5嗅探通用免嗅函数、自动多层嵌套
 function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl) {
     return 'x5Rule://' + x5jxlist[0] + vipUrl + '@' + (typeof $$$ == 'undefined' ? $ : $$$).toString((x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl, x5Player) => {
-        fba.putVar('test','a');
-        fba.log(fba.getVar('test',''));
-        initConfig({test:'b'});
-        fba.log(config.test);
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
@@ -693,6 +689,10 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
             if(parmset.testcheck==1){fba.showLoading('√解析列表，检测中')}else{fba.showLoading('√视频解析中，请稍候')};
         };
         window.c++;
+        fba.putVar('test','a');
+        fba.log(fba.getVar('test',''));
+        initConfig({test:'b'});
+        fba.log(config.test);
         if (window.c * 250 >= parmset.timeout*1000) {
             if (x5jxlist.length == 1) { 
                 //最后一个X5解析失败了，排序+1
