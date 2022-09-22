@@ -55,8 +55,11 @@ var sortlist = []; //排序降权临时存放数组
 var sortfile = "hiker://files/rules/Src/Auto/SrcSort.json";
 var isresetsort = resetsort || 0;
 if (isresetsort==0&&fileExist(sortfile)){
-    eval("var newsort=" + fetch(sortfile));
-    Object.assign(sortlist, newsort);
+    let sorts = fetch(sortfile);
+    if(sorts){
+        eval("var newsort=" + fetch(sortfile));
+        Object.assign(sortlist, newsort);
+    }
 }
 
 //自动解析入口
