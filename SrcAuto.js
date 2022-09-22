@@ -696,11 +696,14 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 //for(var i = 0; i < userconfig.x5scslist.length; i++) {
                 //    faillist.splice(faillist.indexOf(userconfig.x5scslist[i]),1);
                 //}
-                let sccesslist = fba.getVar('SrcAuto$sccesslist','')?fba.getVar('SrcAuto$sccesslist','').split(','):[];
-                for(var i = 0; i < sccesslist.length; i++) {
-                    faillist.splice(faillist.indexOf(sccesslist[i]),1);
+                
+                if(fba.getVar('SrcAuto$sccesslist')){
+                    var sccesslist = fba.getVar('SrcAuto$sccesslist','').split(',');
+                    for(var i = 0; i < sccesslist.length; i++) {
+                        faillist.splice(faillist.indexOf(sccesslist[i]),1);
+                    }
                 }
-                fba.log('成功的:'+fba.getVar('SrcAuto$sccesslist',''));
+
                 if(parmset.printlog==1){
                     if(parmset.testcheck==1){
                         fba.log("√检测结束");
@@ -777,9 +780,11 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     //fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
                     //fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
                     
-                    let sccesslist = fba.getVar('SrcAuto$sccesslist','')?fba.getVar('SrcAuto$sccesslist','').split(','):[];
-                    sccesslist.push(x5nmlist[0]);
-                    fba.putVar('SrcAuto$sccesslist',sccesslist.join(','));
+                    if(fba.getVar('SrcAuto$sccesslist')){
+                        fba.putVar('SrcAuto$sccesslist',fba.getVar('SrcAuto$sccesslist')+","+x5nmlist[0]);
+                    }else{
+                        fba.putVar('SrcAuto$sccesslist',x5nmlist[0]);
+                    }
                     window.c = 100;
                 }else{
                     return $$$("#noLoading#").lazyRule((url,formatUrl)=>{
