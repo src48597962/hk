@@ -677,7 +677,7 @@ var aytmParse = function (vipUrl,parseStr) {
 function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl) {
     log(faillist);
     return 'webRule://' + x5jxlist[0] + vipUrl + '@' + (typeof $$$ == 'undefined' ? $ : $$$).toString((x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl, x5Player) => {
-        fba.log(faillist);
+        fy_bridge_app.log(faillist);
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
@@ -708,7 +708,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     }
                 }
                 fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
-                fba.log(faillist);
+
                 fba.hideLoading();
                 /*
                 if(userconfig.x5test.sccesslist){
