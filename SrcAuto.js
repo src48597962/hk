@@ -648,7 +648,7 @@ var aytmParse = function (vipUrl,parseStr) {
                     faillist.push(x5nmlist[i]);
                 }
 
-                delete SAconfig['x5scslist'];
+                //delete SAconfig['x5scslist'];
                 //SAconfig['x5test'] = {sccesslist:[],issortL:0};
                 //writeFile(cfgfile, JSON.stringify(SAconfig));
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
@@ -681,12 +681,13 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
-
+/*
         var cfgfile = "hiker://files/rules/Src/Auto/config.json";
         var Autocfg = fetch(cfgfile);
         if(Autocfg){
             eval("var userconfig=" + Autocfg);//加载用户参数
         }
+        */
         if (window.c == null) {
             window.c = 0;
             if(parmset.testcheck==1){fba.showLoading('√解析列表，检测中')}else{fba.showLoading('√视频解析中，请稍候')};
@@ -696,13 +697,14 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
             if (x5jxlist.length == 1) { 
                 //最后一个X5解析失败了，排序+1
                 fba.hideLoading();
+                /*
                 if(userconfig.x5test.sccesslist){
                     var sccesslist = userconfig.x5test.sccesslist||[];
                     for(var i = 0; i < sccesslist.length; i++) {
                         faillist.splice(faillist.indexOf(sccesslist[i]),1);
                     }
                 }
-
+*/
                 if(parmset.printlog==1){
                     if(parmset.testcheck==1){
                         fba.log("√检测结束");
