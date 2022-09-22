@@ -688,6 +688,22 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         if (window.c * 250 >= parmset.timeout*1000) {
             if (x5jxlist.length == 1) { 
                 //最后一个X5解析失败了，排序+1
+                let failsum = 0;
+                for(var j=0;j<sortlist.length;j++){
+                    if(sortlist[j].name == x5nmlist[0]){ 
+                        sortlist[j].sort = sortlist[j].sort+1;
+                        failsum = sortlist[j].sort;
+                        if(sortlist[j].stopfrom.indexOf(parmset.from)==-1){
+                            if((parmset.autoselect==1&&failsum>2)||(failsum>=parmset.failcount)){
+                                //自动选择接口时此接口失败大于2时、失败次数大于限定，此片源排除此解析接口
+                                sortlist[j].stopfrom[sortlist[j].stopfrom.length] = parmset.from;
+                            };
+                        }
+                        break;
+                    }
+                }
+                fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
+
                 fba.hideLoading();
                 /*
                 if(userconfig.x5test.sccesslist){
@@ -721,21 +737,6 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                         return "toast://〖"+parmset.parseStr+"〗解析失败";
                     }
                 }else{
-                    let failsum = 0;
-                    for(var j=0;j<sortlist.length;j++){
-                        if(sortlist[j].name == x5nmlist[0]){ 
-                            sortlist[j].sort = sortlist[j].sort+1;
-                            failsum = sortlist[j].sort;
-                            if(sortlist[j].stopfrom.indexOf(parmset.from)==-1){
-                                if((parmset.autoselect==1&&failsum>2)||(failsum>=parmset.failcount)){
-                                    //自动选择接口时此接口失败大于2时、失败次数大于限定，此片源排除此解析接口
-                                    sortlist[j].stopfrom[sortlist[j].stopfrom.length] = parmset.from;
-                                };
-                            }
-                            break;
-                        }
-                    }
-                    fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
                     return "toast://所有解析都失败了，请重新配置断插解析";
                 };
             } else {
@@ -759,8 +760,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 return x5Player(x5jxlist.slice(1), x5nmlist.slice(1), vipUrl, sortlist, parmset, faillist, formatUrl);
             }
         }
-        fy_bridge_app.putVar('test','a');
-        fy_bridge_app.log(fy_bridge_app.getVar('test',''));
+
         //fba.log(fy_bridge_app.getUrls());
         var urls = _getUrls();
         var exclude = /\/404\.m3u8|\/xiajia\.mp4|\/余额不足\.m3u8|\.css|\.js|\.gif|\.png|\.jpeg|api\.m3u88\.com/;//设置排除地址
