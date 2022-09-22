@@ -668,7 +668,7 @@ var aytmParse = function (vipUrl,parseStr) {
 
 //x5嗅探通用免嗅函数、自动多层嵌套
 function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl) {
-    return 'webRule://' + x5jxlist[0] + vipUrl + '@' + (typeof $$$ == 'undefined' ? $ : $$$).toString((x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl, x5Player) => {
+    return 'x5Rule://' + x5jxlist[0] + vipUrl + '@' + (typeof $$$ == 'undefined' ? $ : $$$).toString((x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, formatUrl, x5Player) => {
         if(typeof(request)=='undefined'||!request){
             eval(fba.getInternalJs());
         };
@@ -681,6 +681,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
             window.c = 0;
             if(parmset.testcheck==1){fba.showLoading('√解析列表，检测中')}else{fba.showLoading('√视频解析中，请稍候')};
         };
+        fba.log('1');
         window.c++;
         if (window.c * 250 >= parmset.timeout*1000) {
             if (x5jxlist.length == 1) { 
@@ -753,7 +754,9 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 return x5Player(x5jxlist.slice(1), x5nmlist.slice(1), vipUrl, sortlist, parmset, faillist, formatUrl);
             }
         }
+        fba.log('2');
         fba.log(fy_bridge_app.getUrls());
+        fba.log('3');
         var urls = _getUrls();
         var exclude = /\/404\.m3u8|\/xiajia\.mp4|\/余额不足\.m3u8|\.css|\.js|\.gif|\.png|\.jpeg|api\.m3u88\.com/;//设置排除地址
         var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4/;//设置符合条件的正确地址
