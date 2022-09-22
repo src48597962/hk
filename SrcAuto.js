@@ -698,14 +698,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 }
 
                 fba.hideLoading();
-                /*
-                if(userconfig.x5test.sccesslist){
-                    var sccesslist = userconfig.x5test.sccesslist||[];
-                    for(var i = 0; i < sccesslist.length; i++) {
-                        faillist.splice(faillist.indexOf(sccesslist[i]),1);
-                    }
-                }
-*/
+
                 if(parmset.printlog==1){
                     if(parmset.testcheck==1){
                         fba.log("√检测结束");
@@ -723,25 +716,13 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                                 return "toast://〖"+faillist+"〗解析失败";
                             },faillist);
                         }else{
-                            return $$$("#noLoading#").lazyRule((faillist,helper)=>{
-                                log('1>'+faillist);
-                                return $("检测结束,是否处理失败的解析？").confirm((faillist,helper) => {
-                                    log('2>'+faillist);
-                                    return $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
-                                        log('3>'+faillist);
-                                        requireCache(helper, 48);
-                                        faildeal(faillist);
-                                    }, faillist, helper);
+                            return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => {
+                                return $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
+                                    requireCache(helper, 48);
+                                    log(faillist);
+                                    faildeal(faillist);
                                 }, faillist, helper);
-                            },faillist, parmset.helper);
-                            /*
-                                return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => {
-                                    return $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
-                                        requireCache(helper, 48);
-                                        faildeal(faillist);
-                                    }, faillist, helper);
-                                }, faillist, parmset.helper);
-                            */
+                            }, faillist, parmset.helper);
                         }
                         
                     }else{
