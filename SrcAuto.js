@@ -639,7 +639,7 @@ var aytmParse = function (vipUrl,parseStr) {
             } else {
                 if(printlog==1){if(testcheck==1){log("√JS免嗅和URL明码检测结束，转嗅探检测接口数："+x5jxlist.length)}else{log("√JS免嗅和URL明码失败，转嗅探解析接口数："+x5jxlist.length)}};
                 if(printlog==1){log("√嗅探调用解析口："+x5nmlist[0])};
-                if(testcheck==1){showLoading('嗅探解析列表，检测中')}else{showLoading('√嗅探解析中，请稍候')};
+                //if(testcheck==1){showLoading('嗅探解析列表，检测中')}else{showLoading('√嗅探解析中，请稍候')};
                 let parmset = {"issort":0,"printlog":printlog,"timeout":SAconfig.x5timeout,"autoselect":SAconfig.autoselect,"failcount":SAconfig.failcount,"from":from,"testcheck":testcheck,"parseStr":parseStr,"helper":getMyVar('helper','0'),"Sversion":parseInt(getMyVar('Sversion','0'))};
                 for(var i = 0; i < x5nmlist.length; i++) {
                     faillist.push(x5nmlist[i]);
