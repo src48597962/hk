@@ -777,7 +777,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                     //fy_bridge_app.writeFile("hiker://files/cache/SrcSet.js", "var userconfig = " + JSON.stringify(userconfig));
                     //fy_bridge_app.writeFile(cfgfile, JSON.stringify(userconfig));
                     
-                    let sccesslist = fba.getVar('SrcAuto$sccesslist','')?fba.MyVar('SrcAuto$sccesslist','').split(','):[];
+                    let sccesslist = fba.getVar('SrcAuto$sccesslist','')?fba.getVar('SrcAuto$sccesslist','').split(','):[];
                     sccesslist.push(x5nmlist[0]);
                     fba.putVar('SrcAuto$sccesslist',sccesslist.join(','));
                     window.c = 100;
