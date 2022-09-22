@@ -426,7 +426,7 @@ var aytmParse = function (vipUrl,parseStr) {
     var sorttask = function(obj) {
         let sortdel =[];
         for(var j=0;j<sortlist.length;j++){
-            if(!parselist.some(item => item.name==sortlist[j].name)){ 
+            if(!strlist.some(item => item==sortlist[j].name)){ 
                 sortdel.push(sortlist[j].name);
                 sortlist.splice(j,1);
                 j = j - 1;
@@ -732,11 +732,19 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                                 return "toast://〖"+faillist+"〗解析失败";
                             },faillist);
                         }else{
+                            return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => {
+                                return $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
+                                    log(faillist);
+                                    requireCache(helper, 48);
+                                    faildeal(faillist);
+                                }, faillist, helper);
+                            }, faillist, parmset.helper);
+                            /*
                             return $$$("检测结束,是否处理失败的解析？").confirm((faillist,helper) => $("hiker://empty#noHistory##noRecordHistory#").rule((faillist,helper) => {
-                                log(faillist);
                                 requireCache(helper, 48);
                                 faildeal(faillist);
                             }, faillist, helper), faillist, parmset.helper);
+                            */
                         }
                         
                     }else{
