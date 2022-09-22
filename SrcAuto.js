@@ -650,6 +650,7 @@ var aytmParse = function (vipUrl,parseStr) {
                 //SAconfig['x5scslist'] = [];
                 //writeFile(cfgfile, JSON.stringify(SAconfig));
                 clearVar('SrcAuto$sccesslist');
+                clearVar('SrcAuto$issort');
                 return x5Player(x5jxlist,x5nmlist,vipUrl,sortlist,parmset,faillist,SrcParseS.formatUrl);
             }
         } else {
@@ -690,23 +691,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         if (window.c * 250 >= parmset.timeout*1000) {
             if (x5jxlist.length == 1) { 
                 //最后一个X5解析失败了，排序+1
-                let failsum = 0;
-                for(var j=0;j<sortlist.length;j++){
-                    if(sortlist[j].name == x5nmlist[0]){ 
-                        sortlist[j].sort = sortlist[j].sort+1;
-                        failsum = sortlist[j].sort;
-                        if(sortlist[j].stopfrom.indexOf(parmset.from)==-1){
-                            if((parmset.autoselect==1&&failsum>2)||(failsum>=parmset.failcount)){
-                                //自动选择接口时此接口失败大于2时、失败次数大于限定，此片源排除此解析接口
-                                sortlist[j].stopfrom[sortlist[j].stopfrom.length] = parmset.from;
-                            };
-                        }
-                        break;
-                    }
-                }
-                fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
                 fba.hideLoading();
-
                 //eval(request("hiker://files/cache/SrcSet.js"));
                 //for(var i = 0; i < userconfig.x5scslist.length; i++) {
                 //    faillist.splice(faillist.indexOf(userconfig.x5scslist[i]),1);
@@ -740,6 +725,21 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                         return "toast://〖"+parmset.parseStr+"〗解析失败";
                     }
                 }else{
+                    let failsum = 0;
+                    for(var j=0;j<sortlist.length;j++){
+                        if(sortlist[j].name == x5nmlist[0]){ 
+                            sortlist[j].sort = sortlist[j].sort+1;
+                            failsum = sortlist[j].sort;
+                            if(sortlist[j].stopfrom.indexOf(parmset.from)==-1){
+                                if((parmset.autoselect==1&&failsum>2)||(failsum>=parmset.failcount)){
+                                    //自动选择接口时此接口失败大于2时、失败次数大于限定，此片源排除此解析接口
+                                    sortlist[j].stopfrom[sortlist[j].stopfrom.length] = parmset.from;
+                                };
+                            }
+                            break;
+                        }
+                    }
+                    fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist));
                     return "toast://所有解析都失败了，请重新配置断插解析";
                 };
             } else {
@@ -748,7 +748,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
                 for(var j=0;j<sortlist.length;j++){
                     if(sortlist[j].name == x5nmlist[0]){ 
                         sortlist[j].sort = sortlist[j].sort+1;
-                        parmset.issort = 1;
+                        fba.putVar('SrcAuto$issort','1');
                         failsum = sortlist[j].sort;
                         if(sortlist[j].stopfrom.indexOf(parmset.from)==-1){
                             if((parmset.autoselect==1&&failsum>2)||(failsum>=parmset.failcount)){
@@ -770,7 +770,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         for (var i in urls) {
             if (!exclude.test(urls[i]) && contain.test(urls[i]) && urls[i].indexOf('=http')==-1) {
                 if(parmset.printlog==1){fy_bridge_app.log(x5nmlist[0]+">√嗅探解析成功>"+urls[i])};
-                if(parmset.issort==1){fy_bridge_app.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist))};
+                if(fba.getVar('SrcAuto$issort','')=="1"){fba.writeFile("hiker://files/rules/Src/Auto/SrcSort.json", JSON.stringify(sortlist))};
                 if(parmset.testcheck==1){
                     //eval(request("hiker://files/cache/SrcSet.js"));
                     //userconfig.x5scslist.push(x5nmlist[0]);
