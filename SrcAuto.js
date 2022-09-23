@@ -1,7 +1,7 @@
 //============自动挡处理逻辑、仅用于个人学习使用============
 //========感谢@断念大佬========
 
-var SrcVersion = 7.07;
+var SrcVersion = 7.08;
 
 //载入断插主控js
 eval(fetch('hiker://files/cache/Parse_Dn.js'));
@@ -57,7 +57,7 @@ var isresetsort = resetsort || 0;
 if (isresetsort==0&&fileExist(sortfile)){
     let sorts = fetch(sortfile);
     if(sorts){
-        eval("var newsort=" + fetch(sortfile));
+        eval("var newsort=" + sorts);
         Object.assign(sortlist, newsort);
     }
 }
