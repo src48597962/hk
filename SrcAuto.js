@@ -852,7 +852,7 @@ var SrcParseS = {
                     return 0;
                 }else{
                     try{
-                        var tstime = urlcode.body.match(/#EXT-X-TARGETDURATION:(.*?)\n/)[1];
+                        var tstime = urlcode.body.match(/TARGETDURATION:(.*?)\n/)[1];
                         var urltss = urlcode.body.replace(/#.*?\n/g,'').replace('#EXT-X-ENDLIST','').split('\n');
                     }catch(e){
                         log(e.message);
