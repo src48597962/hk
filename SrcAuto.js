@@ -851,8 +851,8 @@ var SrcParseS = {
                     log(name+'>√m3u8播放地址疑似失效或网络无法访问，不信去验证一下>'+url);
                     return 0;
                 }else{
-                    log(urlcode.body.match(/TARGETDURATION:(.*?)\n/));
-                    log(urlcode.body.match(/TARGETDURATION:.*?\n/))
+                    log(urlcode.body);
+                    
                     try{
                         var tstime = urlcode.body.match(/TARGETDURATION:(.*?)\n/)[1];
                         var urltss = urlcode.body.replace(/#.*?\n/g,'').replace('#EXT-X-ENDLIST','').split('\n');
