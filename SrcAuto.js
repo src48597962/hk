@@ -449,7 +449,6 @@ var aytmParse = function (vipUrl,parseStr) {
             JxList.push(parselist[s]);
             i=s;
         }
-        log(i);
         if(cleansort==0&&!parseStr&&SAconfig.autoselect==1){
             cleansort = 1;//清理sort文件只调用一轮
             JxList.push({lx:'cleansort'});
