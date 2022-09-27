@@ -342,7 +342,7 @@ var aytmParse = function (vipUrl,parseStr) {
     };
 
     var exclude = /404\.m3u8|xiajia\.mp4|余额不足\.m3u8/;//设置排除地址
-    var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4|\.ts/;//设置符合条件的正确地址
+    var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4|\.ts\?/;//设置符合条件的正确地址
     var playurl = "";
     var urls = [];//用于多线路地址
     var names = [];//用于多线路名称
@@ -757,7 +757,7 @@ function x5Player(x5jxlist, x5nmlist, vipUrl, sortlist, parmset, faillist, forma
         //fba.log(fy_bridge_app.getUrls());
         var urls = _getUrls();
         var exclude = /\/404\.m3u8|\/xiajia\.mp4|\/余额不足\.m3u8|\.css|\.js|\.gif|\.png|\.jpeg|api\.m3u88\.com/;//设置排除地址
-        var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4|\.ts/;//设置符合条件的正确地址
+        var contain = /\.mp4|\.m3u8|\.flv|\.avi|\.mpeg|\.wmv|\.mov|\.rmvb|\.dat|qqBFdownload|mime=video%2F|video_mp4|\.ts\?/;//设置符合条件的正确地址
         for (var i in urls) {
             if (!exclude.test(urls[i]) && contain.test(urls[i]) && urls[i].indexOf('=http')==-1) {
                 if(parmset.printlog==1){fy_bridge_app.log(x5nmlist[0]+">√嗅探解析成功>"+urls[i])};
