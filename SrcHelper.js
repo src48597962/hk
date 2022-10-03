@@ -447,7 +447,7 @@ function homepage(helper) {
                     //var updateDate = myDate.getMonth()+1+'-'+myDate.getDate();
                     //if(updateDate!=getItem('updateDate')||isCj==0||getMyVar('debug','0')=='86'){
                         let filepath = getMyVar('SrcCloud','0');
-                        var cjFile = fetch(filepath,{timeout:2000});
+                        var cjFile = request(filepath,{timeout:2000});
                         if(cjFile.indexOf('SrcVersion') > -1){
                             //if(MY_RULE.version<parseInt(cjFile.match(/SrcVersion = ([\s\S]*?);/)[1])){
                             //    return 'toast://无法更新新版脚本依赖';
