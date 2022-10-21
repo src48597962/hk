@@ -1,6 +1,6 @@
 let file1 = "https://gitcode.net/src48597962/hk/-/raw/master/SrcJuying.js";
 let file2 = "https://agit.ai/src48597962/Src/raw/branch/master/SrcJuying.js";
-let relyfile = "";
+var relyfile = "";
 if(fileExist('hiker://files/libs/' + md5(file1) + '.js'){
   relyfile = file1;
 }else if(fileExist('hiker://files/libs/' + md5(file2) + '.js'){
