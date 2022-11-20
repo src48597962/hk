@@ -21,5 +21,74 @@ let customparse = {
             }
         });
         return list;
+    },
+    csp_custom_aidog: function (name) {
+        try {
+            var lists = [];
+            let html = request("https://www.dianyinggou.com/so/" + name);
+            let data = pdfa(html, "body&&.movies&&.each");
+            let cook = getCookie('https://www.dianyinggou.com');
+            data.forEach(item=>{
+                let dogname = pdfh(item, "a&&title");
+                if(dogname.indexOf(name)>-1){
+                    let dogurl = pdfh(item, "a&&href");
+                    let dogpic = pdfh(item, "img&&data-url");
+                    let headers = {
+                        "User-Agent": MOBILE_UA,
+                        "Referer": dogurl,
+                        "x-requested-with": "XMLHttpRequest",
+                        "Cookie": cook
+                    };
+                    let doghtml = request('https://www.dianyinggou.com/SpiderMovie/zy/' + dogname, {headers: headers});
+                    let htmls = pdfa(doghtml, "body&&a");
+                    htmls.forEach(it=>{
+                        try{
+                            let sitename = pdfh(it, "a&&li,1&&Text");
+                            let vodname = pdfh(it, "a&&li,0&&Text");
+                            let vodurl = pdfh(it, "a&&href");
+                            if(vodname==dogname&&!lists.some(ii => ii.url==vodurl)){
+                                lists.push({name:vodname,pic:dogpic,url:vodurl,site:sitename})
+                            }
+                        }catch(e){}
+                    })
+                }
+            })
+        } catch (e) {
+            log(e.message);
+            var lists = [];
+        }
+
+        let list = [];
+        let task = function(obj) {
+            try{
+                let trueurl = request(obj.url, {redirect: false, withHeaders: true});
+                let vodurl = JSON.parse(trueurl).headers.location[0];
+                if(!/qq|mgtv|iptv|iqiyi|youku|bilibili|souhu|cctv|icaqd|cokemv|mhyyy|fun4k|jpys\.me|31kan|37dyw|kpkuang/.test(vodurl)&&!list.some(ii => ii.vodurl==vodurl)){
+                    list.push({
+                        vodname: obj.name,
+                        vodpic: obj.pic,
+                        voddesc: obj.site,
+                        vodurl: vodurl
+                    })
+                }
+            }catch(e){}
+            return 1;
+        }
+        let doglist = lists.map((item)=>{
+			return {
+				func: task,
+				param: item,
+				id: item.url
+			}
+        });
+        if(doglist.length>0){
+            be(doglist, {
+                func: function(obj, id, error, taskResult) {
+                },
+                param: {
+                }
+            });
+        }
+        return list;
     }
 }
