@@ -10,11 +10,11 @@ if(fileExist('hiker://files/libs/' + md5(file1) + '.js')){
   relyfile = file2;
 }
 if(relyfile==""){
-  let cjFile = request(file1,{timeout:2000});
+  let cjFile = request(file1,{timeout:3000});
   if(cjFile.indexOf('nowVersion') > -1){
     relyfile = file1;
   }else{
-    let cjFile = request(file2,{timeout:2000});
+    let cjFile = request(file2,{timeout:3000});
     if(cjFile.indexOf('nowVersion') > -1){
       relyfile = file2;
     }else{
