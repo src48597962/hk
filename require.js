@@ -1,7 +1,7 @@
 let file1 = "https://gitcode.net/src48597962/hk/-/raw/master/SrcJuying.js";
-let file2 = "https://agit.ai/src48597962/Src/raw/branch/master/SrcJuying.js";
-let file3 = "https://jihulab.com/src485979621/hk/-/raw/master/SrcJuying.js";
-var relyfile = "";
+let file2 = "https://gitea.com/src48597962/hk/raw/branch/master/SrcJuying.js";
+let file3 = "https://codeberg.org/src48597962/hk/raw/branch/master/SrcJuying.js";
+let relyfile = "";
 if(fileExist('hiker://files/libs/' + md5(file1) + '.js')){
   relyfile = file1;
 }else if(fileExist('hiker://files/libs/' + md5(file2) + '.js')){
