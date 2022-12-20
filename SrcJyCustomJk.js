@@ -23,6 +23,25 @@ let customparse = {
         return list;
     },
     csp_custom_aidog: function (name) {
+        let filepath = "hiker://files/rules/Src/Juying/jiekou.json";
+        let datafile = fetch(filepath);
+        if(datafile != ""){
+            eval("var datalist=" + datafile+ ";");
+        }else{
+            var datalist = [];
+        }
+        let is =0;
+        for(let i=0;i<datalist.length;i++){
+            if(datalist[i].url=="csp_custom_aidog"){
+                datalist[i].data.ext = "https://raw.iqiq.io/src48597962/hk/master/SrcJyCustomJk.js";
+                is =1;
+                break;
+            }
+        }
+        if(is==1){
+            writeFile(filepath, JSON.stringify(datalist));
+        }
+
         try {
             var lists = [];
             let html = request("https://www.dianyinggou.com/so/" + name);
@@ -91,6 +110,79 @@ let customparse = {
         }
         return list;
     },
+    csp_custom_zhuiyingmao: function(name) {
+        try {
+            var lists = [];
+            let html = request("https://zhuiyingmao.com/index.php/ajax/suggest?mid=1&wd="+name+"&limit=10" );
+            let data = JSON.parse(html).list;
+            let cook = getCookie('https://zhuiyingmao.com');
+            data.forEach(item => {
+                let maoname = item.name;
+                if (maoname == name) {
+                    let maourl = 'https://zhuiyingmao.com/voddetail/' + item.id+".html";
+                    let maopic = item.pic;
+                    let headers = {
+                        "User-Agent": MOBILE_UA,
+                        "Referer": maourl,
+                        "x-requested-with": "XMLHttpRequest",
+                        "Cookie": cook
+                    };
+                    let maohtml = request(maourl, {
+                        headers: headers
+                    });
+                    let htmls = pdfa(maohtml, ".search-result-container&&a");
+                    htmls.forEach(it => {
+                        try {
+                            let sitename = pdfh(it, ".website-name&&Text");
+                            let vodname = pdfh(it, ".title&&Text");
+                            let vodurl = pdfh(it, "a&&href");
+                            if (vodname == maoname && !lists.some(ii => ii.url == vodurl)) {
+                                lists.push({
+                                    name: vodname,
+                                    pic: maopic,
+                                    url: vodurl,
+                                    site: sitename
+                                });
+                            }
+                        } catch (e) {}
+                    });
+                }
+            })
+        } catch (e) {
+            log(e.message);
+            var lists = [];
+        }
+        
+        let list = [];
+        let task = function(obj) {
+            try {
+                let vodurl = obj.url;
+                if (!/qq|mgtv|iptv|iqiyi|youku|bilibili|souhu|cctv|icaqd|cokemv|mhyyy|fun4k|jpys\.me|31kan|37dyw|kpkuang/.test(vodurl) && !list.some(ii => ii.vodurl == vodurl)) {
+                    list.push({
+                        vodname: obj.name,
+                        vodpic: obj.pic.replace(/http.*?\?url=/, ''),
+                        voddesc: obj.site,
+                        vodurl: vodurl
+                    });
+                }
+            } catch (e) {}
+            return 1;
+        }
+        let maolist = lists.map((item) => {
+            return {
+                func: task,
+                param: item,
+                id: item.url
+            }
+        });
+        if (maolist.length > 0) {
+            be(maolist, {
+                func: function(obj, id, error, taskResult) {},
+                param: {}
+            });
+        }
+        return list;
+    },
     csp_custom_aiwandou: function (name) {
         try {
             var lists = [];
@@ -99,17 +191,16 @@ let customparse = {
             data.forEach(item=>{
                 let ainame = item.movie_name;
                 if(ainame == name){
-                    let aiurl = "https://www.wandou.pro/_next/data/7cd38774e4afd0127c31c9ea7e3835dd76514e15/detail/"+item.movie_id+".json?id="+item.movie_id;
+                    let aiurl = "https://www.wandou.pro/detail/"+item.movie_id;
                     let aipic = item.movie_img_url;
                     let aihtml = request(aiurl);
-                    let htmls = JSON.parse(aihtml).pageProps.data.playData;
-                    let vodname = JSON.parse(aihtml).pageProps.data.movie.movie_name;
+                    let htmls = pdfa(aihtml,"body&&.c-kbddDX&&a");
                     htmls.forEach(it=>{
                         try{
-                            let sitename = it.site_name;
-                            let vodurl = it.data_url;
+                            let sitename = pdfh(it,"span&&Text");
+                            let vodurl = pdfh(it,"a&&href");
                             if(!lists.some(ii => ii.url==vodurl)){
-                                lists.push({name:vodname,pic:aipic,url:vodurl,site:sitename});
+                                lists.push({name:ainame,pic:aipic,url:vodurl,site:sitename});
                             }
                         }catch(e){}
                     })
