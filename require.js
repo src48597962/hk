@@ -1,5 +1,5 @@
 let file1 = "https://gitcode.net/src48597962/hk/-/raw/master/SrcJuying.js";
-let file2 = "https://gitea.com/src48597962/hk/raw/branch/master/SrcJuying.js";
+let file2 = "https://jihulab.com/src485979621/hk/-/raw/master/SrcJuying.js";
 let file3 = "https://codeberg.org/src48597962/hk/raw/branch/master/SrcJuying.js";
 let relyfile = "";
 if(fileExist('hiker://files/libs/' + md5(file1) + '.js')){
