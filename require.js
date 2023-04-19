@@ -1,6 +1,7 @@
-let file1 = "https://gitcode.net/src48597962/hk/-/raw/Ju/SrcJu.js";
-let file2 = "https://jihulab.com/src485979621/hk/-/raw/Ju/SrcJu.js";
-let file3 = "https://codeberg.org/src48597962/hk/raw/branch/Ju/SrcJu.js";
+let file1 = "https://jihulab.com/src485979621/hk/-/raw/Ju/SrcJu.js";
+//https://gitcode.net/src48597962/hk/-/raw/Ju/SrcJu.js
+let file2 = "https://codeberg.org/src48597962/hk/raw/branch/Ju/SrcJu.js";
+let file3 = "https://agit.ai/src48597962/hk/raw/branch/Ju/SrcJu.js";
 let relyfile = "";
 if(fileExist('hiker://files/libs/' + md5(file1) + '.js')){
   relyfile = file1;
