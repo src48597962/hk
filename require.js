@@ -1,4 +1,4 @@
-let file1 = "https://jihulab.com/src485979621/hk/-/raw/Ju/SrcJu.js";
+let file1 = "https://jihulab.com/src48597962/hk/-/raw/Ju/SrcJu.js";
 let file2 = "https://gitcode.net/src48597962/hk/-/raw/Ju/SrcJu.js";
 let file3 = "https://codeberg.org/src48597962/hk/raw/branch/Ju/SrcJu.js";
 //https://agit.ai/src48597962/hk/raw/branch/Ju/SrcJu.js
