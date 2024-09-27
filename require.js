@@ -1,5 +1,5 @@
-let file1 = "https://gitcode.net/src48597962/hk/-/raw/master/SrcJuying.js";
-let file2 = "https://codeberg.org/src48597962/hk/raw/branch/master/SrcJuying.js";
+let file1 = "https://codeberg.org/src48597962/hk/raw/branch/master/SrcJuying.js";
+let file2 = "https://gitcode.net/src48597962/hk/-/raw/master/SrcJuying.js";
 let file3 = "https://agit.ai/src48597962/hk/raw/branch/master/SrcJuying.js";
 
 let relyfile = "";
