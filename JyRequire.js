@@ -1,6 +1,6 @@
-let file1 = "https://gitcode.net/src48597962/juying/-/raw/master/SrcJuying.js";
+let file1 = "https://raw.gitcode.com/src48597962/juying/raw/master/SrcJuying.js";
 let file2 = "https://codeberg.org/src48597962/Juying/raw/branch/master/SrcJuying.js";
-let file3 = "https://raw.githubusercontent.com/src48597962/Juying/master/SrcJuying.js";
+let file3 = "https://ghproxy.cc/https://raw.githubusercontent.com/src48597962/Juying/master/SrcJuying.js";
 
 let cjFile = request(file1,{timeout:3000});
 if(cjFile.indexOf('nowVersion') > -1){
