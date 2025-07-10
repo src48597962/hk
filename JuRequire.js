@@ -1,15 +1,19 @@
-let file1 = "https://raw.gitcode.com/src48597962/juyue/raw/master/SrcJu.js";
-let file2 = "https://codeberg.org/src48597962/Juyue/raw/branch/master/SrcJu.js";
-let file3 = "https://raw.githubusercontent.com/src48597962/Juyue/master/SrcJu.js";
-
-let cjFile = request(file1,{timeout:3000});
-if(cjFile.indexOf('nowVersion') > -1){
-  relyfile = file1;
-}else{
-  let cjFile = request(file2,{timeout:3000});
-  if(cjFile.indexOf('nowVersion') > -1){
-    relyfile = file2;
-  }else{
-    relyfile = file3;
-  }
+//"https://raw.gitcode.com/src48597962/juyue/raw/master/",
+let relys = [
+    "https://codeberg.org/src48597962/Juyue/raw/branch/master/",
+    "https://raw.githubusercontent.com/src48597962/Juyue/master/"
+];
+function shuffleArray(array) {
+    array.sort(() => Math.random() - 0.5);
+    return array;
+}
+function getRely() {
+    shuffleArray(relys);
+    for (let i = 0; i < relys.length; i++) {
+        let content = fetch(relys[i] + 'SrcJu.js', { timeout: 3000 });
+        if (content && content.indexOf('nowVersion') > -1) {
+            return relys[i] + 'SrcJu.js';
+        }
+    }
+    return '';
 }
