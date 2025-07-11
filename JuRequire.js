@@ -1,6 +1,7 @@
 //"https://raw.gitcode.com/src48597962/juyue/raw/master/",
 let relys = [
     "https://codeberg.org/src48597962/Juyue/raw/branch/master/",
+    "https://cnb.cool/src48597962/Juyue/-/git/raw/master/SrcJu.js",
     "https://raw.githubusercontent.com/src48597962/Juyue/master/"
 ];
 function shuffleArray(array) {
