@@ -1,5 +1,5 @@
-//"https://raw.gitcode.com/src48597962/juying/raw/master/",
 let relys = [
+    "https://raw.gitcode.com/src48597962/juying/raw/master/",
     "https://codeberg.org/src48597962/Juying/raw/branch/master/",
     "https://cnb.cool/src48597962/Juying/-/git/raw/master/",
     "https://raw.githubusercontent.com/src48597962/Juying/master/"
